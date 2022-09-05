@@ -2,7 +2,7 @@
 <h5 align="center"><a href="https://pt.wikipedia.org/wiki/Ficheiro:Twitter_Logo.png">[Source: Wikipédia]</a></h5>  
   
 # Para os desenvolvedores do Trends24:  
-> Caros desenvolvedores/responsáveis do Trends24, caso este módulo possa ser ofensivo, danoso ou seja ruim para seus sistemas, me contatem e farei a remoção o mais rápido possível, minha intenção neste módulo é apenas trazer uma funcionalidade útil para as pessoas ou seus projetos de desenvolvimento, meu objetivo não é, nunca foi e nunca será, causar danos ao site de vocês.  
+> Caros desenvolvedores/responsáveis do Trends24, caso este módulo possa ser ofensivo, danoso ou seja ruim para seus sistemas, me contatem usando as [Issues](https://github.com/KillovSky/Trendings/issues), farei a remoção o mais rápido possível, minha intenção neste módulo é apenas trazer uma funcionalidade útil para as pessoas ou seus projetos de desenvolvimento, meu objetivo não é, nunca foi e nunca será, causar danos ao site de vocês.  
   
 ## Instalação:  
 - Rode o código abaixo para instalar via `NPM`:  
@@ -11,7 +11,7 @@
 $ npm i @killovsky/trendings  
 ```  
   
-- Rode o código abaixo para instalar via `git`:  
+- Rode o código abaixo para instalar via `GIT`:  
 ```bash  
 $ git clone https://github.com/KillovSky/Trendings.git  
 ```  
@@ -33,7 +33,9 @@ $ git clone https://github.com/KillovSky/Trendings.git
 >  
 > 5. Cada linha do código possui uma explicação do que está rodando ou vai rodar, ou seja, o código INTEIRO é explicado, linha por linha.   
 >  
-> 6. E muitas outras coisas, confira o código para entender!  
+> 6. As trends são automaticamente formatadas em ordem decrescente [130, 129, 128...] de acordo com a quantidade de tweets feitos.  
+>  
+> 7. E muitas outras coisas, confira o código para entender!  
 ------  
   
 ## Como testar este módulo:  
@@ -44,20 +46,15 @@ $ npm test
 ```  
   
 ## Como utilizar este módulo:  
-- Existem diversas formas de utilizar, mas como se trata de um script que faz uso de `Promises`, irei dar dois exemplos que funcionam bem, lembrando, você pode rodar sem especificar nada pois também funciona desta forma.   
+- Existem diversas formas de utilizar, mas como se trata de um script que faz uso de `Promises`, irei dar dois exemplos que funcionam bem, lembrando, você pode rodar sem especificar nada pois também funciona desta forma. 
+- Clique em uma das linhas/setas abaixo para exibir os detalhes!  
   
 <details>  
-<summary><code>[Clique para exibir] → Descrição de cada parâmetro da execução:</code></summary>  
+<summary><code>Descrição de cada parâmetro da execução:</code></summary>  
   
 ```javascript  
 // Function especificada  
 info('local')  
-  
-// Function sem especificar  
-info()  
-  
-// Retorna os locais  
-locales()  
   
 /* ------------------------------------- *  
 * 1° - Local  
@@ -65,6 +62,24 @@ locales()
 * Padrão: 'worldwide'  
 * Locais: "brazil, worldwide, italy..."  
 * ------------------------------------- */  
+  
+// Function sem especificar  
+info()  
+  
+// Retorna os locais  
+locales()  
+  
+// Retorna o JSON das regiões  
+regions()  
+  
+// Retorna o JSON de erros  
+defaults()  
+  
+// Retorna os códigos HTTP  
+http()  
+  
+// Retorna a package JSON  
+packages()  
 ```  
   
 </details>   
@@ -212,7 +227,7 @@ console.log(data);
 > Esse meio de informação exige instalação de módulos de terceiro, porém quero fazer meus sistemas sem dependências, nada além do próprio `Node.js`, pois tenho foco em uma única tarefa: ser simples.  
 >  
 - O que é proibido ao usar este módulo?  
-> Você jamais deve abusar deve abusar de qualquer programa, sempre crie um limitador de tempo ou armazene a ultima resposta e use ela, evite ficar utilizando um programa deste estilo muitas vezes seguidas sem esperar.  
+> Você jamais deve abusar de qualquer programa, sempre crie um limitador de tempo ou armazene a ultima resposta e use ela, evite ficar utilizando um programa deste estilo muitas vezes seguidas sem esperar.  
   
 ## Suporte  
   

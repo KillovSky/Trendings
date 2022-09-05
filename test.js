@@ -1,5 +1,5 @@
 "use strict";
-const trendings = require('./index');
+const trendings = require("./index");
 
 /* Inicia o scrapping na região do Brasil */
-trendings.info('brazil').then(data => console.log(data));
+trendings.info("brazil").then(console.log);

@@ -1,6 +1,6 @@
 {
   "name": "@killovsky/trendings",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Repositório do módulo scrapper para obtenção de trendings do Twitter.",
   "main": "index.js",
   "scripts": {
@@ -12,6 +12,7 @@
   },
   "keywords": [
     "twitter",
+    "tweet",
     "trends",
     "trendings",
     "network",
@@ -21,12 +22,26 @@
     "srapper",
     "information",
     "topics",
-	"trends24"
+    "trends24"
   ],
   "author": "KillovSky",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/KillovSky/Trendings/issues"
   },
-  "homepage": "https://github.com/KillovSky/Trendings#readme"
+  "homepage": "https://github.com/KillovSky/Trendings#readme",
+  "funding": [
+    {
+      "type": "kofi",
+      "url": "http://ko-fi.com/killovsky"
+    },
+    {
+      "type": "paypal",
+      "url": "https://bit.ly/33QDaGa"
+    },
+    {
+      "type": "picpay",
+      "url": "https://picpay.me/userlucas123"
+    }
+  ]
 }
