@@ -80,6 +80,9 @@ http()
   
 // Retorna a package JSON  
 packages()  
+  
+// Retorna detalhes do 'ambient'  
+ambient()  
 ```  
   
 </details>   

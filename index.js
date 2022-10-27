@@ -1,9 +1,9 @@
 "use strict";
-const https = require("https");
-const httpcodes = require("./codes.json");
 const default_trends = require("./default.json");
-const regions = require("./region.json");
+const httpcodes = require("./codes.json");
+const https = require("https");
 const mopack = require("./package.json");
+const regions = require("./region.json");
 
 /*######################################################################################
 #
@@ -46,6 +46,25 @@ const mopack = require("./package.json");
 /* Função para remover trends duplicadas */
 const uniqueObject = (array, key) => [...new Map(array.map((item) => [item[key], item])).values()];
 
+/* Modo de uso da uniqueObject e detalhes */
+const Utilization = {
+    "functions": {
+        "uniqueObject": {
+            "arguments": {
+                "array": "An array with duplicate objects inside.",
+                "key": "The main key of the object to be filtered."
+            },
+            "example": "uniqueObject(array, key)",
+            "use": uniqueObject
+        }
+    },
+    "last": "Brazil",
+    "licence": "MIT",
+    "madeBy": "KillovSky",
+    "name": "Trendings",
+    "usage": "info('place')"
+};
+
 /* Cria a exports para atuar como função */
 exports.info = function (
     local = ""
@@ -78,8 +97,11 @@ exports.info = function (
             place = regions[place];
         }
 
+        /* Define o local na 'ambient' */
+        Utilization.last = place;
+
         /* Opções de acesso */
-        let options = {
+        const options = {
             hostname: "trends24.in",
             method: "GET",
             path: place
@@ -166,11 +188,25 @@ exports.info = function (
                     /* Formata a Object para ter apenas resultados sem repetição */
                     body = uniqueObject(body, "trend");
 
-                    /* Formata as strings das keys, afim de evitar encode URI */
+                    /* Formata com encodeURI qualquer parâmetro ainda não formatado */
                     body.forEach(function (g) {
-                        g.url = `https://twitter.com/search?q=${encodeURIComponent(g.trend)}`;
-                        g.trend = decodeURIComponent(g.trend);
-                        g.count = decodeURIComponent(g.count);
+                        try {
+                            g.trend = encodeURIComponent(g.trend);
+                            g.count = encodeURIComponent(g.count);
+                        } catch (err) {
+                            response.dev_msg = err.message;
+                        }
+                    });
+
+                    /* Formata as strings das keys, afim de evitar encode URI fora da URL */
+                    body.forEach(function (g) {
+                        try {
+                            g.url = `https://twitter.com/search?q=${g.trend}`;
+                            g.trend = decodeURIComponent(g.trend);
+                            g.count = decodeURIComponent(g.count);
+                        } catch (err) {
+                            response.dev_msg = err.message;
+                        }
                     });
 
                     /* Formata a Object de acordo com quantidade de tweets */
@@ -224,3 +260,6 @@ exports.http = () => httpcodes;
 
 /* Retorna a package.json */
 exports.packages = () => mopack;
+
+/* Retorna a uniqueObject */
+exports.ambient = () => Utilization;
