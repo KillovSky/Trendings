@@ -1,5 +1,5 @@
-"use strict";
+/* Faz o require do arquivo */
 const trendings = require("./index");
 
-/* Inicia o scrapping na região do Brasil */
-trendings.info("brazil").then(console.log);
+/* Executa como modo teste */
+trendings.info("TEST#TICKET").then(console.log);

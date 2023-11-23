@@ -1,265 +1,295 @@
-"use strict";
-const default_trends = require("./default.json");
-const httpcodes = require("./codes.json");
-const https = require("https");
-const mopack = require("./package.json");
-const regions = require("./region.json");
+/* Requires */
+const fs = require('fs');
+const path = require('path');
+const https = require('https');
 
-/*######################################################################################
-#
-# Por que fiz a linguagem em inglês?
-# R: Pois eu gosto deste idioma e quis seguir o padrão como quase todos os outros devs.
-#
-# Esse código pode ser copiado para criar algo diferente, novo, superior ou etc?
-# R: É claro! Mas você >PRECISA< manter o copyright, leia mais da licença abaixo.
-#
-# Por que este código parece igual ao seu outro da NASA?
-# R: Por que eu quis fazer algo confortável para quem veio de outros projetos meus.
-# R: Ou seja, quis manter o mesmo formato para facilitar, e vou continuar fazendo isso.
-#
-########################################################################################
-#
-#   MIT License
-#
-#   Copyright (c) 2022 KillovSky - Lucas R.
-#
-#   Permission is hereby granted, free of charge, to any person obtaining a copy
-#   of this software and associated documentation files (the "Software"), to deal
-#   in the Software without restriction, including without limitation the rights
-#   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#   copies of the Software, and to permit persons to whom the Software is
-#   furnished to do so, subject to the following conditions:
-#
-#   The above copyright notice and this permission notice shall be included in all
-#   copies or substantial portions of the Software.
-#
-#   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-#   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-#   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-#   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-#   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-#   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-#   SOFTWARE.
-#
-######################################################################################*/
+/* Definições padrão do código */
+let envInfo = JSON.parse(fs.readFileSync(`${__dirname}/utils.json`));
 
-/* Função para remover trends duplicadas */
-const uniqueObject = (array, key) => [...new Map(array.map((item) => [item[key], item])).values()];
+/* Realiza funções de pós finalização */
+function postResults(response) {
+    /* Verifica se pode resetar a envInfo */
+    if ((envInfo.settings.finish.value === true)
+        || (envInfo.settings.fail.value === true
+            && response.error === true
+        )
+    ) {
+        /* setTimeout para poder retornar */
+        setTimeout(() => {
+            /* Reseta a envInfo */
+            envInfo.functions.reset.value();
 
-/* Modo de uso da uniqueObject e detalhes */
-const Utilization = {
-    "functions": {
-        "uniqueObject": {
-            "arguments": {
-                "array": "An array with duplicate objects inside.",
-                "key": "The main key of the object to be filtered."
-            },
-            "example": "uniqueObject(array, key)",
-            "use": uniqueObject
-        }
-    },
-    "last": "Brazil",
-    "licence": "MIT",
-    "madeBy": "KillovSky",
-    "name": "Trendings",
-    "usage": "info('place')"
-};
+            /* Reseta conforme o tempo */
+        }, envInfo.settings.wait.value);
+    }
 
-/* Cria a exports para atuar como função */
-exports.info = function (
-    local = ""
+    /* Retorna o resultado de uma função */
+    return response;
+}
+
+/* Insere o erro na envInfo, não reseta pois o erro pode ser na envInfo */
+function echoError(error) {
+    /* Determina o erro */
+    const myError = !(error instanceof Error) ? new Error(`Received a instance of '${typeof error}' in function 'fail', expected an instance of 'Error'.`) : error;
+
+    /* Determina o sucesso */
+    envInfo.results.value.nodeDetails.isError = true;
+
+    /* Determina a falha */
+    envInfo.results.value.nodeDetails.code = myError.code || '0';
+
+    /* Determina a mensagem de erro */
+    envInfo.results.value.nodeDetails.message = myError.message || 'The operation cannot be completed because an unexpected error occurred.';
+
+    /* Define se pode printar erros */
+    if (envInfo.settings.error.value === true) {
+        /* Printa o erro usando cores */
+        console.log('\x1b[31m', `[${path.basename(__dirname)} #${envInfo.parameters.code.value || 0}] →`, `\x1b[33m${envInfo.parameters.message.value}`);
+    }
+
+    /* Retorna o erro */
+    return envInfo.results.value;
+}
+
+/* Função que retorna todo o arquivo */
+const ambientDetails = () => envInfo;
+
+/* Função que retorna a package.json */
+const packageInfo = () => JSON.parse(fs.readFileSync(`${__dirname}/package.json`));
+
+/* Cria uma função de busca usando os valores da envInfo como padrão */
+function getTrendings(
+    worldName = envInfo.functions.info.arguments.worldName.value,
 ) {
+    /* Define o valor padrão com base na envInfo */
+    const response = envInfo.parameters.stock.value;
 
-    /* Faz uma promise com a função para funcionar perfeitamente */
-    return new Promise(function (resolve) {
-
-        /* Cria a object de return em casos de erros, não afetando o usuário mas permitindo que ele saiba quando der erro */
-        let response = default_trends[Math.floor(Math.random() * default_trends.length)];
-
-        /* Cria a place */
-        let place = false;
-
-        /* Define os locais válidos */
-        response.locales = regions.Array_List;
-
-        /* Caso o local esteja OK */
-        if (local !== "" || local !== null) {
-            place = local.toLowerCase();
-        }
-
-        /* Corrige a local */
-        if (place === "" || place === null) {
-            place = regions.worldwide;
-        } else if (!response.locales.includes(place)) {
-            response.dev_msg = "Region not supported, check available regions in 'locales' key.";
-            place = regions.worldwide;
-        } else {
-            place = regions[place];
-        }
-
-        /* Define o local na 'ambient' */
-        Utilization.last = place;
-
-        /* Opções de acesso */
-        const options = {
-            hostname: "trends24.in",
-            method: "GET",
-            path: place
-        };
-
+    /* Faz uma promise, pois as versões antigas do node não tinham 'await/async' */
+    return new Promise((resolve) => {
         /* Try - Catch para caso dê um erro pior */
         try {
+            /* Caso seja o modo teste */
+            if (worldName === 'TEST#TICKET' || worldName === '') {
+                /* Retorna os dados padrão */
+                resolve(response);
 
-            /* Let para obter a chunk da requisição */
-            let data = "";
+                /* Caso seja uso real */
+            } else {
+                /* Define o país padrão */
+                let place = envInfo.parameters.alias.value.worldwide;
 
-            /* Faz a requisição */
-            const req = https.get(options, function (res) {
+                /* Verifica se o enviado existe na envInfo */
+                if (Object.keys(envInfo.parameters.alias.value).includes(worldName)) {
+                    /* Define como o padrão */
+                    place = envInfo.parameters.alias.value[worldName.toLowerCase()];
+                } else {
+                    /* Ajusta a mensagem dev */
+                    response.dev_msg = "Region not supported, check available regions at 'locales' function.";
+                }
 
-                /* Edita a object padrão de casos de erro */
-                response.code = res.statusCode;
-                response.explain = httpcodes[res.statusCode];
-                response.headers = res.headers;
+                /* Define as opções do request */
+                const options = {
+                    hostname: 'trends24.in',
+                    method: 'GET',
+                    path: place,
+                };
 
-                /* Recebe a chunk */
-                res.on("data", function (chunk) {
-                    data += chunk;
+                /* Let para obter a chunk da requisição */
+                let data = '';
+
+                /* Define a requisição com os detalhes corretos */
+                const req = https.get(options, (res) => {
+                    /* Insere o código de status do request */
+                    response.code = res.statusCode;
+
+                    /* Insere a mensagem de status do request */
+                    response.explain = envInfo.parameters.codes.value[res.statusCode];
+
+                    /* Insere os headers */
+                    response.headers = res.headers;
+
+                    /* Ao receber a data */
+                    res.on('data', (chunk) => {
+                        /* Insere a chunk junto ao resto da data */
+                        data += chunk;
+                    });
+
+                    /* Em caso de falhas */
+                    req.on('error', (err) => {
+                        /* Define como erro */
+                        response.error = true;
+
+                        /* Define o código do erro */
+                        response.code = err.code;
+
+                        /* Define a mensagem do erro */
+                        response.error_msg = err.message;
+
+                        /* Finaliza a função com o resolve */
+                        resolve(postResults(response));
+                    });
+
+                    /* Ao receber todo o HTML */
+                    res.on('end', () => {
+                        /* Define a RegExp */
+                        const parseRegExp = /<li><a href="(https:\/\/twitter.com\/search\?q=[^"]+)">([^<]+)<\/a>(?:<br><span class=tweet-count>(\d+)K<\/span>)?<\/li>/g;
+
+                        /* Define os resultados do parse do HTML */
+                        let result = [...data.matchAll(parseRegExp)];
+
+                        /* Filtra apenas os resultados que sejam uma trending com URL */
+                        result = result.filter((trends) => trends[1].includes('search'));
+
+                        /* Ajusta os resultados para que os sem contadores tenham um valor de 0K */
+                        result = result.map((trends) => ({ url: trends[1], trend: trends[2], count: trends[3] || '0' }));
+
+                        /* Remove duplicados */
+                        result = [...new Map(result.map((item) => [item.trend, item])).values()];
+
+                        /* Remove os duplicados mantendo as Objects com maior valor */
+                        result = result.reduce((acc, item) => {
+                            /* Se não tiver ou se tiver mas for um de menos trends */
+                            if (!acc[item.trend]
+                                || parseInt(item.count, 10) > parseInt(acc[item.trend].count, 10)
+                            ) {
+                                /* Insere ou substitui pelo novo */
+                                acc[item.trend] = item;
+                            }
+
+                            /* Retorna os valores */
+                            return acc;
+
+                            /* Envia uma Object vazia para ir preenchendo com reduce */
+                        }, {});
+
+                        /* Converte em uma Array de Objects */
+                        result = Object.values(result);
+
+                        /* Organiza por quantidade de trends feitas */
+                        result = result.sort((a, b) => b.count - a.count);
+
+                        /* Insere o 'K' dos counts */
+                        result = result.map((trends) => ({ url: trends.url, trend: trends.trend, count: `${trends.count}K` }));
+
+                        /* Define a resposta na envInfo */
+                        response.tweet = result;
+
+                        /* Insere a data do dia */
+                        response.date = (new Date()).toLocaleString();
+
+                        /* Finaliza o request e retorna o JSON */
+                        resolve(postResults(response));
+                    });
                 });
 
-                /* Em caso de falhas */
-                req.on("error", function (err) {
+                /* Em caso de falhas | Check 2 */
+                req.on('error', (err) => {
+                    /* Insere como erro */
                     response.error = true;
+
+                    /* Insere o código do erro */
                     response.code = err.code;
+
+                    /* Insere a mensagem do erro */
                     response.error_msg = err.message;
-                    return resolve(response);
+
+                    /* Retorna o resultado padrão final */
+                    resolve(postResults(response));
                 });
 
-                /* Finaliza pois o resultado foi completamente recebido */
-                res.on("end", function () {
-
-                    /* Formata a página usando as tags de HTML */
-                    /* Dica: Evite fazer programas neste estilo, são confusos, complexos e não tem uma boa 'qualidade' */
-                    const Trendings = [];
-
-                    /* Extrai as informações do HTML usando regex */
-                    /* Por que não usou cheerio? Por que este módulo visa ser totalmente livre do uso de módulos externos */
-                    let body = data.match(/class=(.*?tweet-count)(.*?)(?=<\/a>)/g);
-
-                    /* Edita as informações extraídas a ponto de poder editar com regex */
-                    body = body.toString();
-                    body = body.replace(/class=/gim, "\n");
-                    body = body.replace("\",", "\n");
-                    body = body.replace("</span", "\n");
-
-                    /* Extrai somente as linhas com contagem de tweets */
-                    body = body.match(/tweet-count.*$/gim);
-                    body = body.filter((g) => g.includes("tweet-count"));
-
-                    /* Formata todas as linhas recebidas acima */
-                    body.forEach(function (tread) {
-                        tread = tread.replace("target=", ", \"trend\": ");
-                        tread = tread.replace("\">", "\", \"trend\": \"");
-                        tread = tread.replace("\" \"tw\">", "\"");
-                        tread = tread.replace(/,$/, "\" }");
-                        tread = tread.replace(/^/, "{ \"");
-                        tread = tread.replace("</span></li><li title=", ", \"trend\": ");
-                        tread = tread.replace("t\">", "t\": \"");
-                        tread = tread.replace("K, \"", "K\", \"");
-                        tread = tread.replace("K</span></li><li", "K\"");
-                        tread = tread.replace("tweet-count", "count");
-                        tread = tread.replace("\"count>", "\"count\": \"");
-                        tread = tread.replace("><a href=", ", \"url\": ");
-                        tread = tread.replace("</span></li><li><a href=", ", \"url\": ");
-                        Trendings.push(tread);
-                    });
-
-                    /* Zera a body para receber a nova Object */
-                    body = [];
-
-                    /* Transforma o HTML na Object, ignora se der erro, não afetando o funcionamento */
-                    Trendings.map(function (g) {
-                        try {
-                            body.push(JSON.parse(g));
-                        } catch (err) {
-                            response.dev_msg = err.message;
-                        }
-                    });
-
-                    /* Formata a Object para ter apenas resultados sem repetição */
-                    body = uniqueObject(body, "trend");
-
-                    /* Formata com encodeURI qualquer parâmetro ainda não formatado */
-                    body.forEach(function (g) {
-                        try {
-                            g.trend = encodeURIComponent(g.trend);
-                            g.count = encodeURIComponent(g.count);
-                        } catch (err) {
-                            response.dev_msg = err.message;
-                        }
-                    });
-
-                    /* Formata as strings das keys, afim de evitar encode URI fora da URL */
-                    body.forEach(function (g) {
-                        try {
-                            g.url = `https://twitter.com/search?q=${g.trend}`;
-                            g.trend = decodeURIComponent(g.trend);
-                            g.count = decodeURIComponent(g.count);
-                        } catch (err) {
-                            response.dev_msg = err.message;
-                        }
-                    });
-
-                    /* Formata a Object de acordo com quantidade de tweets */
-                    body = body.sort((a, b) => Number(b.count.replace(/[a-z]/gim, "")) - Number(a.count.replace(/[a-z]/gim, "")));
-
-                    /* Define a resposta na Object */
-                    response.tweet = body;
-
-                    /* Insere a data do dia */
-                    let today = new Date();
-                    response.date = today.toLocaleString();
-
-                    /* Finaliza o request e retorna o JSON */
-                    return resolve(response);
-                });
-            });
-
-            /* Em caso de falhas 2x */
-            req.on("error", function (err) {
-                response.error = true;
-                response.code = err.code;
-                response.error_msg = err.message;
-                return resolve(response);
-            });
-
-            /* Finaliza a requisição */
-            req.end();
+                /* Finaliza a requisição, se chegar aqui */
+                req.end();
+            }
 
             /* Caso der erro em alguma coisa, não afeta o resultado e cai no catch abaixo */
         } catch (error) {
+            /* Define como erro */
             response.error = true;
+
+            /* Define o código de erro (Node.js dessa vez) */
             response.code = error.code;
+
+            /* Define a mensagem de erro (Node.js dessa vez) */
             response.error_msg = error.message;
-            return resolve(response);
+
+            /* Retorna o resultado padrão, mas ainda tem chances de ser algo com defeito */
+            resolve(postResults(response));
         }
     });
+}
 
-};
+/* Faz a injeção das outras funções, não use com obj-in-obj a menos que realmente queira! */
+function resetAmbient(
+    changeKey = {},
+) {
+    /* Define o valor padrão */
+    let exporting = {
+        reset: resetAmbient,
+    };
 
-/* Retorna os locais disponíveis */
-exports.locales = () => regions.Array_List;
+    /* Try-Catch para casos de erro */
+    try {
+        /* Define a envInfo padrão */
+        envInfo = JSON.parse(fs.readFileSync(`${__dirname}/utils.json`));
 
-/* Retorna o JSON da regions */
-exports.regions = () => regions;
+        /* Caso tenha enviado uma Object customizada */
+        if (Object.keys(changeKey).length !== 0) {
+            /* Faz a listagem das keys */
+            Object.keys(changeKey).forEach((key) => {
+                /* Edita se a key existir */
+                if (Object.keys(envInfo).includes(key) && key !== 'developer') {
+                    /* Baseado na enviada */
+                    envInfo[key] = changeKey[key];
+                }
+            });
+        }
 
-/* Retorna o JSON da default */
-exports.defaults = () => default_trends;
+        /* Insere a postResults na envInfo */
+        envInfo.functions.dump.value = postResults;
 
-/* Retorna os códigos HTTP */
-exports.http = () => httpcodes;
+        /* Insere a ambientDetails na envInfo */
+        envInfo.functions.ambient.value = ambientDetails;
 
-/* Retorna a package.json */
-exports.packages = () => mopack;
+        /* Insere a echoError na envInfo */
+        envInfo.functions.fail.value = echoError;
 
-/* Retorna a uniqueObject */
-exports.ambient = () => Utilization;
+        /* Insere a resetAmbient na envInfo */
+        envInfo.functions.reset.value = resetAmbient;
+
+        /* Insere a getTrendings na envInfo */
+        envInfo.functions.info.value = getTrendings;
+
+        /* Insere a package.json na envInfo */
+        envInfo.functions.packs.value = packageInfo;
+
+        /* Define o local completo para usos externos */
+        envInfo.parameters.location.value = __filename;
+
+        /* Define o resultado padrão */
+        envInfo.results.value = envInfo.parameters.stock.value;
+
+        /* Define as funções do arquivo */
+        module.exports = {
+            [envInfo.exports.env]: envInfo.functions.ambient.value,
+            [envInfo.exports.fail]: envInfo.functions.fail.value,
+            [envInfo.exports.dump]: envInfo.functions.dump.value,
+            [envInfo.exports.reset]: envInfo.functions.reset.value,
+            [envInfo.exports.info]: envInfo.functions.info.value,
+            [envInfo.exports.packs]: envInfo.functions.packs.value,
+        };
+
+        /* Define o valor retornado */
+        exporting = module.exports;
+
+        /* Caso de algum erro */
+    } catch (error) {
+        /* Insere tudo na envInfo */
+        echoError(error);
+    }
+
+    /* Retorna o exports */
+    return exporting;
+}
+
+/* Roda a injeção de funções a 1° vez */
+resetAmbient();

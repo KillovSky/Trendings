@@ -1,8 +1,53 @@
 <p align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Twitter_Logo.png" width="150" height="150" alt="logo_twitter.png"/></p>  
 <h5 align="center"><a href="https://pt.wikipedia.org/wiki/Ficheiro:Twitter_Logo.png">[Source: Wikipédia]</a></h5>  
+<p align="center">  
+    <a href="https://hits.seeyoufarm.com">  
+        <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FKillovSky%2FTrendings&count_bg=%233D89C8&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Views&edge_flat=true)](https://hits.seeyoufarm.com"/>  
+    </a>  
+    <a href="https://github.com/KillovSky/Trendings/blob/master/LICENSE">  
+        <img alt="GitHub License" src="https://img.shields.io/github/license/KillovSky/Trendings?color=blue&label=Licence&style=flat-square">  
+    </a>  
+	<a href="https://github.com/KillovSky/Trendings/blob/master/package.json">  
+        <img alt="GitHub Version" src="https://img.shields.io/github/package-json/v/KillovSky/Trendings?label=Build&style=flat-square">  
+	</a>  
+	<a href="https://github.com/KillovSky/Trendings/commits/main">  
+        <img alt="GitHub Updates" src="https://img.shields.io/github/commit-activity/y/KillovSky/Trendings?label=Updates&style=flat-square">  
+	</a>  
+	<a href="https://github.com/KillovSky/Trendings/stargazers/">  
+        <img title="GitHub Stars" src="https://img.shields.io/github/stars/KillovSky/Trendings?label=Stars&style=flat-square">  
+	</a>  
+	<a href="https://github.com/KillovSky/Trendings/network/members">  
+        <img title="GitHub Forks" src="https://img.shields.io/github/forks/KillovSky/Trendings?label=Forks&style=flat-square">  
+	</a>  
+	<a href="https://github.com/KillovSky/Trendings/watchers">  
+        <img title="GitHub Watch" src="https://img.shields.io/github/watchers/KillovSky/Trendings?label=Watchers&style=flat-square">  
+	</a>  
+	<a href="https://www.codefactor.io/repository/github/KillovSky/Trendings">  
+        <img alt="Codefactor" src="https://www.codefactor.io/repository/github/KillovSky/Trendings/badge">  
+	</a>  
+	<a href="http://isitmaintained.com/project/KillovSky/Trendings">  
+        <img alt="Is maintained" src="http://isitmaintained.com/badge/resolution/KillovSky/Trendings.svg">  
+	</a>  
+</p>  
   
-# Para os desenvolvedores do Trends24:  
-> Caros desenvolvedores/responsáveis do Trends24, caso este módulo possa ser ofensivo, danoso ou seja ruim para seus sistemas, me contatem usando as [Issues](https://github.com/KillovSky/Trendings/issues), farei a remoção o mais rápido possível, minha intenção neste módulo é apenas trazer uma funcionalidade útil para as pessoas ou seus projetos de desenvolvimento, meu objetivo não é, nunca foi e nunca será, causar danos ao site de vocês.  
+------ 
+  
+## Introdução  
+- Detalhes importantes que estão em outros arquivos:  
+  
+1. [Reportar segurança, problemas e demais](https://github.com/KillovSky/Trendings/blob/master/.github/SECURITY.md)  
+2. [Contribuir com o código](https://github.com/KillovSky/Trendings/blob/master/.github/CONTRIBUTING.md)  
+3. [Ver o código de conduta](https://github.com/KillovSky/Trendings/blob/master/.github/CODE_OF_CONDUCT.md)  
+4. [Ver a changelog](https://github.com/KillovSky/Trendings/blob/master/.github/CHANGELOG.md)  
+5. [Ver mais projetos](https://github.com/KillovSky)  
+6. [Fazer uma donate](https://github.com/KillovSky#-fundings)  
+  
+------ 
+  
+## O que este módulo faz?  
+- Ele utiliza o site [Trends24](https://trends24.in/) para obter as trends, sem necessidade de módulos como `cheerio` ou `puppeteer`.  
+  
+------ 
   
 ## Instalação:  
 - Rode o código abaixo para instalar via `NPM`:  
@@ -16,8 +61,7 @@ $ npm i @killovsky/trendings
 $ git clone https://github.com/KillovSky/Trendings.git  
 ```  
   
-## O que este módulo faz?  
-- Ele utiliza o site [Trends24](https://trends24.in/) para obter as trends, sem necessidade de módulos como `cheerio` ou `puppeteer`.  
+------ 
   
 ## O que este módulo tem de especial?  
 - Assim como o da [NASA](https://github.com/KillovSky/NASA), muitas coisas, confira abaixo:  
@@ -35,7 +79,9 @@ $ git clone https://github.com/KillovSky/Trendings.git
 >  
 > 6. As trends são automaticamente formatadas em ordem decrescente [130, 129, 128...] de acordo com a quantidade de tweets feitos.  
 >  
-> 7. E muitas outras coisas, confira o código para entender!  
+> 7. Os sistemas são como um jogo de exploração, eles podem ser usados de infinitas formas, como um sandbox, divirta-se!  
+>  
+> 8. E muitas outras coisas, confira o código para entender!  
 ------  
   
 ## Como testar este módulo:  
@@ -45,15 +91,18 @@ $ git clone https://github.com/KillovSky/Trendings.git
 $ npm test  
 ```  
   
+------ 
+  
 ## Como utilizar este módulo:  
-- Existem diversas formas de utilizar, mas como se trata de um script que faz uso de `Promises`, irei dar dois exemplos que funcionam bem, lembrando, você pode rodar sem especificar nada pois também funciona desta forma. 
+- Existem diversas formas de utilizar, mas como se trata de um script que faz uso de `Promises`, irei dar dois exemplos que funcionam bem, lembrando, você pode rodar sem especificar nada pois também funciona desta forma.   
 - Clique em uma das linhas/setas abaixo para exibir os detalhes!  
+- Clique [aqui](https://github.com/KillovSky/Trendings/blob/master/utils.json) para ver detalhes do ambiente de código e suas funções.  
   
 <details>  
 <summary><code>Descrição de cada parâmetro da execução:</code></summary>  
   
 ```javascript  
-// Function especificada  
+// Função responsável por todo o código  
 info('local')  
   
 /* ------------------------------------- *  
@@ -61,28 +110,23 @@ info('local')
 * Valores: string  
 * Padrão: 'worldwide'  
 * Locais: "brazil, worldwide, italy..."  
+* Test Mode: "TEST#TICKET", ""  
 * ------------------------------------- */  
   
-// Function sem especificar  
-info()  
+// Retorna o valor padrão e detalhes do erro  
+fail('Error')  
   
-// Retorna os locais  
-locales()  
+// Retorna o resultado e roda funções adicionais  
+dump('*')  
   
-// Retorna o JSON das regiões  
-regions()  
-  
-// Retorna o JSON de erros  
-defaults()  
-  
-// Retorna os códigos HTTP  
-http()  
+// Reseta o ambiente dos códigos  
+reset()  
   
 // Retorna a package JSON  
-packages()  
+packs()  
   
-// Retorna detalhes do 'ambient'  
-ambient()  
+// Retorna o ambiente de códigos  
+env()  
 ```  
   
 </details>   
@@ -122,7 +166,7 @@ trendings.info('brazil').then(data => console.log(data));
 <summary><code>Código já prontos [async/await]:</code></summary>  
   
 ```javascript  
-// Código usando await 
+// Código usando await   
 const trendings = require('@killovsky/trendings');  
 const data = await trendings.info('brazil');  
 console.log(data);  
@@ -141,12 +185,16 @@ console.log(data);
 ```JSON  
 {  
 	"date": "String | Data [YYYY-MM-DD HH:MM:SS]",  
-	"error": "true | false",  
-	"dev_msg": "String / false | Mensagem adicional de erro",  
-	"error_msg": "String / false | Códigos de erros de execução",   
-	"locales": "Array | Todos os locais disponíveis",  
+	"error": "Boolean | Determina se houve erro no request",  
+	"dev_msg": "String / Boolean | Mensagem adicional de erro",  
+	"error_msg": "String / false | Mensagem de erro do request",   
 	"code": "Number | String | Código de erro HTTP",  
-	"explain": {  
+	"nodeDetails": {  
+		"isError": "Boolean | Determina se houve erro no Node",  
+		"code": "Number / Boolean | Código de erro do Node",  
+		"message": "String / Boolean | Detalhes da mensagem de erro"  
+	},  
+    "explain": {  
 		"code": "Number / String | Código escrito de HTTP",  
 		"why": "String | Explicação do código HTTP"  
 	},  
@@ -158,9 +206,9 @@ console.log(data);
 	},  
 	"tweet": [  
 		{  
-			"count": "String | Quantidade de tweets",  
-			"url": "String | URL com o link da trend",  
-			"trend": "String | Assunto do momento"  
+			"url": "String | URL da Trending",  
+			"trend": "String | Assunto do momento",  
+			"count": "String | Quantidade de tweets"  
 		}  
 	]  
 }  
@@ -173,53 +221,38 @@ console.log(data);
   
 ```JSON  
 {  
-	"date": "20/07/2022 23:53:05",  
-	"error": false,  
-	"dev_msg": false,  
-	"error_msg": false,  
-	"locales": ["brazil", "worldwide", "paris", "...."],  
-	"code": 200,  
-	"explain": {  
-		"code": "OK",  
-		"why": "The request is OK, this response depends on the HTTP method used."  
-	},  
-	"headers": {  
-		"connection": "close",  
-		"content-length": "159490",  
-		"cache-control": "max-age=3600",  
-		"content-type": "text/html; charset=utf-8",  
-		"last-modified": "Thu, 21 Jul 2022 02:47:23 GMT",  
-		"strict-transport-security": "max-age=31556926",  
-		"accept-ranges": "bytes",  
-		"date": "Thu, 21 Jul 2022 02:53:04 GMT",  
-		"vary": "x-fh-requested-host, accept-encoding"  
-	},  
-	"tweet": [  
-		{  
-			"count": "551K",  
-			"url": "https://twitter.com/search?q=%23MasterChefBR",  
-			"trend": "#MasterChefBR"  
-		},  
-		{  
-			"count": "513K",  
-			"url": "https://twitter.com/search?q=%23IlhaRecord",  
-			"trend": "#IlhaRecord"  
-		},  
-		{  
-			"count": "403K",  
-			"url": "https://twitter.com/search?q=Anitta",  
-			"trend": "Anitta"  
-		},  
-		{  
-			"count": "401K",  
-			"url": "https://twitter.com/search?q=Slipknot",  
-			"trend": "Slipknot"  
-		}  
-	]  
+    "date":"3/25/2023, 2:03:05 PM",  
+    "error":false,  
+    "dev_msg":false,  
+    "error_msg":false,  
+    "code":200,  
+    "nodeDetails":{  
+        "isError":false,  
+        "code":false,  
+        "message":false  
+    },  
+    "explain":{  
+        "code":"OK",  
+        "why":"The request is OK, this response depends on the HTTP method used."  
+    },  
+    "headers":{  
+        "connection":"close",  
+        "date":"Sat, 25 Mar 2023 17:03:05 GMT",  
+        "last-modified":"Sat, 25 Mar 2023 16:59:19 GMT"  
+    },  
+    "tweet":[  
+        {  
+            "count":"1266K",  
+            "url":"https://twitter.com/search?q=Messi",  
+            "trend":"Messi"  
+        }  
+    ]  
 }  
 ```  
   
 </details>   
+  
+------ 
   
 ## Perguntas e Respostas:  
   
@@ -232,9 +265,7 @@ console.log(data);
 - O que é proibido ao usar este módulo?  
 > Você jamais deve abusar de qualquer programa, sempre crie um limitador de tempo ou armazene a ultima resposta e use ela, evite ficar utilizando um programa deste estilo muitas vezes seguidas sem esperar.  
   
-## Suporte  
+------ 
   
-- Se obtiver algum problema, você pode me dizer [Reportando nas Issues](https://github.com/KillovSky/Trendings/issues).  
-- Confira outros projetos meus [Acessando Isto](https://github.com/KillovSky).  
-- Se gostar, doe para me ajudar a continuar desenvolvendo, mais informações [Clicando Aqui](http://htmlpreview.github.io/?https://github.com/KillovSky/iris/blob/main/.readme/donates/page.html) - [Página do Projeto Íris]  
-  
+## Para os desenvolvedores do Trends24:  
+> Caros desenvolvedores/responsáveis do Trends24, caso este módulo possa ser ofensivo, danoso ou seja ruim para seus sistemas, me contatem usando as [Issues](https://github.com/KillovSky/Trendings/issues), farei a remoção o mais rápido possível, minha intenção neste módulo é apenas trazer uma funcionalidade útil para as pessoas ou seus projetos de desenvolvimento, meu objetivo não é, nunca foi e nunca será, causar danos ao site de vocês.  

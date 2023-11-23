@@ -1,0 +1,912 @@
+{
+	"name": "Trends",
+	"description": "Módulo sem dependências que faz a obtenção das trendings do Twitter",
+	"developer": "KillovSky",
+	"projects": "https://github.com/KillovSky",
+	"license": "MIT",
+	"usage": {
+		"general": "Trends.function(value)",
+		"examples": [
+			"Trends.env()",
+			"Trends.fail('Error')",
+			"Trends.info('place')",
+			"Trends.dump('response')",
+			"Trends.reset('Object')",
+			"Trends.env.functions.env.value()",
+			"Trends.env.functions.fail.value('Error')",
+			"Trends.env.functions.info.value('place')",
+			"Trends.env.functions.dump.value('response')",
+			"Trends.env.functions.reset.value('Object')"
+		]
+	},
+	"helps": [
+		"Você pode mudar os parâmetros da envInfo enviando o valor da key que deseja editar ao resetar, por exemplo → Trends.reset({ name: 'Twitter'}) ← Isso mudaria o nome do modulo para Twitter, o uso então passaria ser: → Twitter.funcão ← Isso também permite que você edite as funções a rodar e demais itens como a → Trends.info ← usando o mesmo método.",
+		"As informações do último uso podem ser armazenados em 'caching' na memoria se você utilizar → Trends.env().settings.finish.value = false ← | Você também pode editar o tempo limite em que as informações serão salvas na memoria, por exemplo → Trends.env().settings.wait = 10000 ← | Isso mudaria o tempo de espera para 10 segundos, mas em milissegundos.",
+		"As types podem ser usadas em conjunto com a função typeof e outras, ou seja, todos os valores foram inseridos visando a facilidade de produção dos seus códigos, espero que goste!",
+		"Todos as funções tem dados padrões, você não sofrerá erros por omitir, sendo que em algumas funções como a reset, os argumentos são opcionais.",
+		"Você pode enviar códigos para salvar na envInfo, como por exemplo, uma nova função que leia a package.json, uma que crie exports, uma que substitua todas as funções padrões e entre outras.",
+		"Existem infinitas formas de usar e editar esse módulo, todos os detalhes e linhas estão comentados com o que cada item faz, divirta-se explorando!"
+	],
+	"exports": {
+		"env": "env",
+		"fail": "fail",
+		"packs": "packs",
+		"info": "info",
+		"dump": "dump",
+		"reset": "reset"
+	},
+	"files": {
+		"index.js": "Arquivo com as funções de JS que fazem os requests e scrapping das trendings",
+		"test.js": "Sistema que faz um teste no código para demonstração",
+		"utils.json": "Este arquivo, serve como um tipo de database-in-memory para as operações"
+	},
+	"modules": {
+		"https": "Faz as requisições nos sites usando o protocolo https",
+		"fs": "Faz a leitura dos arquivos JSON do módulo",
+		"path": "Obtém a localização desse arquivo, apenas para fins externos do usuário"
+	},
+	"settings": {
+		"wait": {
+			"description": "Tempo em MS que deve esperar antes de resetar",
+			"types": ["boolean"],
+			"value": 5000
+		},
+		"error": {
+			"description": "Define se pode printar os erros em 'human-like' no console",
+			"types": ["boolean"],
+			"value": false
+		},
+		"fail": {
+			"description": "Define se a envInfo deve ser resetada em casos de erro",
+			"types": ["boolean"],
+			"value": true
+		},
+		"finish": {
+			"description": "Define se deve resetar a cada utilização",
+			"types": ["boolean"],
+			"value": true
+		}
+	},
+	"functions": {
+		"ambient": {
+			"arguments": false,
+			"description": "Retorna as variáveis e sistemas do arquivo",
+			"types": ["boolean", "function"],
+			"value": false
+		},
+		"packs": {
+			"arguments": false,
+			"description": "Retorna os dados da package.json",
+			"types": ["boolean", "function"],
+			"value": false
+		},
+		"fail": {
+			"arguments": {
+				"error": {
+					"description": "Instância de erro para formatação",
+					"types": ["boolean", "Error"],
+					"value": false
+				}
+			},
+			"description": "Formata em 'human-like' os erros recebidos",
+			"types": ["boolean", "function"],
+			"value": false
+		},
+		"info": {
+			"arguments": {
+				"worldName": {
+					"description": "Nome do país, estado ou local de onde as trendings serão obtidas",
+					"types": ["string"],
+					"value": "worldwide"
+				}
+			},
+			"description": "Obtém as trendings de determinado local do mundo",
+			"types": ["boolean", "function"],
+			"value": false
+		},
+		"dump": {
+			"arguments": {
+				"response": {
+					"description": "Qualquer tipo de dado que for enviado",
+					"types": ["undefined", "object", "boolean", "number", "bigint", "string", "symbol", "function"],
+					"value": false
+				}
+			},
+			"description": "Printa o resultado e determina se a envInfo deve ser resetada ou em quanto tempo isso ocorrerá",
+			"types": ["boolean", "function"],
+			"value": false
+		},
+		"reset": {
+			"arguments": {
+				"changeKey": {
+					"description": "Uma object similar a envInfo, incluindo apenas os valores das quais quer editar no código, sendo um argumento opcional",
+					"types": ["boolean", "object"],
+					"value": false
+				}
+			},
+			"description": "Reseta todos os usos, detalhes e demais itens do módulo",
+			"types": ["boolean", "function"],
+			"value": false
+		}
+	},
+	"parameters": {
+		"alias": {
+			"description": "Sistema de alias para não ser preciso inserir todo o sufixo",
+			"types": ["object"],
+			"value": {
+				"worldwide": "/",
+				"abu-dhabi": "/united-arab-emirates/abu-dhabi",
+				"acapulco": "/mexico/acapulco",
+				"accra": "/ghana/accra",
+				"adana": "/turkey/adana",
+				"adelaide": "/australia/adelaide",
+				"aguascalientes": "/mexico/aguascalientes",
+				"ahmedabad": "/india/ahmedabad",
+				"ahsa": "/saudi-arabia/ahsa",
+				"albuquerque": "/united-states/albuquerque",
+				"alexandria": "/egypt/alexandria",
+				"algeria": "/algeria",
+				"algiers": "/algeria/algiers",
+				"amman": "/jordan/amman",
+				"amritsar": "/india/amritsar",
+				"amsterdam": "/netherlands/amsterdam",
+				"ankara": "/turkey/ankara",
+				"ansan": "/korea/ansan",
+				"antalya": "/turkey/antalya",
+				"antipolo": "/philippines/antipolo",
+				"argentina": "/argentina",
+				"athens": "/greece/athens",
+				"atlanta": "/united-states/atlanta",
+				"auckland": "/new-zealand/auckland",
+				"austin": "/united-states/austin",
+				"australia": "/australia",
+				"austria": "/austria",
+				"bahrain": "/bahrain",
+				"baltimore": "/united-states/baltimore",
+				"bandung": "/indonesia/bandung",
+				"bangalore": "/india/bangalore",
+				"bangkok": "/thailand/bangkok",
+				"barcelona": "/venezuela/barcelona",
+				"barcelona_es": "/spain/barcelona",
+				"barquisimeto": "/venezuela/barquisimeto",
+				"barranquilla": "/colombia/barranquilla",
+				"baton-rouge": "/united-states/baton-rouge",
+				"bekasi": "/indonesia/bekasi",
+				"belarus": "/belarus",
+				"belem": "/brazil/belem",
+				"belfast": "/united-kingdom/belfast",
+				"belgium": "/belgium",
+				"belo-horizonte": "/brazil/belo-horizonte",
+				"benin-city": "/nigeria/benin-city",
+				"bergen": "/norway/bergen",
+				"berlin": "/germany/berlin",
+				"bhopal": "/india/bhopal",
+				"bilbao": "/spain/bilbao",
+				"birmingham": "/united-kingdom/birmingham",
+				"birmingham_us": "/united-states/birmingham",
+				"blackpool": "/united-kingdom/blackpool",
+				"bogota": "/colombia/bogota",
+				"bologna": "/italy/bologna",
+				"bordeaux": "/france/bordeaux",
+				"boston": "/united-states/boston",
+				"bournemouth": "/united-kingdom/bournemouth",
+				"brasilia": "/brazil/brasilia",
+				"brazil": "/brazil",
+				"bremen": "/germany/bremen",
+				"brest": "/belarus/brest",
+				"brighton": "/united-kingdom/brighton",
+				"brisbane": "/australia/brisbane",
+				"bristol": "/united-kingdom/bristol",
+				"bucheon": "/korea/bucheon",
+				"buenos-aires": "/argentina/buenos-aires",
+				"bursa": "/turkey/bursa",
+				"busan": "/korea/busan",
+				"cagayan-de-oro": "/philippines/cagayan-de-oro",
+				"cairo": "/egypt/cairo",
+				"calgary": "/canada/calgary",
+				"cali": "/colombia/cali",
+				"calocan": "/philippines/calocan",
+				"campinas": "/brazil/campinas",
+				"can-tho": "/vietnam/can-tho",
+				"canada": "/canada",
+				"canberra": "/australia/canberra",
+				"cape-town": "/south-africa/cape-town",
+				"caracas": "/venezuela/caracas",
+				"cardiff": "/united-kingdom/cardiff",
+				"cebu-city": "/philippines/cebu-city",
+				"changwon": "/korea/changwon",
+				"charlotte": "/united-states/charlotte",
+				"chelyabinsk": "/russia/chelyabinsk",
+				"chennai": "/india/chennai",
+				"chiba": "/japan/chiba",
+				"chicago": "/united-states/chicago",
+				"chihuahua": "/mexico/chihuahua",
+				"chile": "/chile",
+				"cincinnati": "/united-states/cincinnati",
+				"ciudad-guayana": "/venezuela/ciudad-guayana",
+				"ciudad-juarez": "/mexico/ciudad-juarez",
+				"cleveland": "/united-states/cleveland",
+				"cologne": "/germany/cologne",
+				"colombia": "/colombia",
+				"colorado-springs": "/united-states/colorado-springs",
+				"columbus": "/united-states/columbus",
+				"concepcion": "/chile/concepcion",
+				"cordoba": "/argentina/cordoba",
+				"cork": "/ireland/cork",
+				"coventry": "/united-kingdom/coventry",
+				"culiacan": "/mexico/culiacan",
+				"curitiba": "/brazil/curitiba",
+				"da-nang": "/vietnam/da-nang",
+				"daegu": "/korea/daegu",
+				"daejeon": "/korea/daejeon",
+				"dallas-ft.-worth": "/united-states/dallas-ft-worth",
+				"dammam": "/saudi-arabia/dammam",
+				"darwin": "/australia/darwin",
+				"davao-city": "/philippines/davao-city",
+				"delhi": "/india/delhi",
+				"den-haag": "/netherlands/den-haag",
+				"denmark": "/denmark",
+				"denver": "/united-states/denver",
+				"depok": "/indonesia/depok",
+				"derby": "/united-kingdom/derby",
+				"detroit": "/united-states/detroit",
+				"diyarbakir": "/turkey/diyarbak%c4%b1r",
+				"dnipropetrovsk": "/ukraine/dnipropetrovsk",
+				"dominican-republic": "/dominican-republic",
+				"donetsk": "/ukraine/donetsk",
+				"dortmund": "/germany/dortmund",
+				"dresden": "/germany/dresden",
+				"dubai": "/united-arab-emirates/dubai",
+				"dublin": "/ireland/dublin",
+				"durban": "/south-africa/durban",
+				"dusseldorf": "/germany/dusseldorf",
+				"ecatepec-de-morelos": "/mexico/ecatepec-de-morelos",
+				"ecuador": "/ecuador",
+				"edinburgh": "/united-kingdom/edinburgh",
+				"edmonton": "/canada/edmonton",
+				"egypt": "/egypt",
+				"el-paso": "/united-states/el-paso",
+				"eskisehir": "/turkey/eskisehir",
+				"essen": "/germany/essen",
+				"faisalabad": "/pakistan/faisalabad",
+				"fortaleza": "/brazil/fortaleza",
+				"france": "/france",
+				"frankfurt": "/germany/frankfurt",
+				"fresno": "/united-states/fresno",
+				"fukuoka": "/japan/fukuoka",
+				"galway": "/ireland/galway",
+				"gaziantep": "/turkey/gaziantep",
+				"gdansk": "/poland/gdansk",
+				"geneva": "/switzerland/geneva",
+				"genoa": "/italy/genoa",
+				"germany": "/germany",
+				"ghana": "/ghana",
+				"giza": "/egypt/giza",
+				"glasgow": "/united-kingdom/glasgow",
+				"goiania": "/brazil/goiania",
+				"gomel": "/belarus/gomel",
+				"gothenburg": "/sweden/gothenburg",
+				"goyang": "/korea/goyang",
+				"greece": "/greece",
+				"greensboro": "/united-states/greensboro",
+				"grodno": "/belarus/grodno",
+				"guadalajara": "/mexico/guadalajara",
+				"guarulhos": "/brazil/guarulhos",
+				"guatemala": "/guatemala",
+				"guatemala-city": "/guatemala/guatemala-city",
+				"guayaquil": "/ecuador/guayaquil",
+				"gwangju": "/korea/gwangju",
+				"hai-phong": "/vietnam/hai-phong",
+				"haifa": "/israel/haifa",
+				"hamamatsu": "/japan/hamamatsu",
+				"hamburg": "/germany/hamburg",
+				"hanoi": "/vietnam/hanoi",
+				"harrisburg": "/united-states/harrisburg",
+				"hermosillo": "/mexico/hermosillo",
+				"hiroshima": "/japan/hiroshima",
+				"ho-chi-minh-city": "/vietnam/ho-chi-minh-city",
+				"honolulu": "/united-states/honolulu",
+				"houston": "/united-states/houston",
+				"hull": "/united-kingdom/hull",
+				"hulu-langat": "/malaysia/hulu-langat",
+				"hyderabad": "/india/hyderabad",
+				"ibadan": "/nigeria/ibadan",
+				"incheon": "/korea/incheon",
+				"india": "/india",
+				"indianapolis": "/united-states/indianapolis",
+				"indonesia": "/indonesia",
+				"indore": "/india/indore",
+				"ipoh": "/malaysia/ipoh",
+				"ireland": "/ireland",
+				"irkutsk": "/russia/irkutsk",
+				"israel": "/israel",
+				"istanbul": "/turkey/istanbul",
+				"italy": "/italy",
+				"izmir": "/turkey/izmir",
+				"jackson": "/united-states/jackson",
+				"jacksonville": "/united-states/jacksonville",
+				"jaipur": "/india/jaipur",
+				"jakarta": "/indonesia/jakarta",
+				"japan": "/japan",
+				"jeddah": "/saudi-arabia/jeddah",
+				"jerusalem": "/israel/jerusalem",
+				"johannesburg": "/south-africa/johannesburg",
+				"johor-bahru": "/malaysia/johor-bahru",
+				"jordan": "/jordan",
+				"kaduna": "/nigeria/kaduna",
+				"kajang": "/malaysia/kajang",
+				"kano": "/nigeria/kano",
+				"kanpur": "/india/kanpur",
+				"kansas-city": "/united-states/kansas-city",
+				"karachi": "/pakistan/karachi",
+				"kawasaki": "/japan/kawasaki",
+				"kayseri": "/turkey/kayseri",
+				"kazan": "/russia/kazan",
+				"kenya": "/kenya",
+				"khabarovsk": "/russia/khabarovsk",
+				"kharkiv": "/ukraine/kharkiv",
+				"kitakyushu": "/japan/kitakyushu",
+				"klang": "/malaysia/klang",
+				"kobe": "/japan/kobe",
+				"kolkata": "/india/kolkata",
+				"konya": "/turkey/konya",
+				"korea": "/korea",
+				"krakow": "/poland/krakow",
+				"krasnodar": "/russia/krasnodar",
+				"krasnoyarsk": "/russia/krasnoyarsk",
+				"kuala-lumpur": "/malaysia/kuala-lumpur",
+				"kumamoto": "/japan/kumamoto",
+				"kumasi": "/ghana/kumasi",
+				"kuwait": "/kuwait",
+				"kyiv": "/ukraine/kyiv",
+				"kyoto": "/japan/kyoto",
+				"lagos": "/nigeria/lagos",
+				"lahore": "/pakistan/lahore",
+				"las-palmas": "/spain/las-palmas",
+				"las-vegas": "/united-states/las-vegas",
+				"latvia": "/latvia",
+				"lausanne": "/switzerland/lausanne",
+				"lebanon": "/lebanon",
+				"leeds": "/united-kingdom/leeds",
+				"leicester": "/united-kingdom/leicester",
+				"leipzig": "/germany/leipzig",
+				"leon": "/mexico/leon",
+				"lille": "/france/lille",
+				"lima": "/peru/lima",
+				"liverpool": "/united-kingdom/liverpool",
+				"lodz": "/poland/lodz",
+				"london": "/united-kingdom/london",
+				"long-beach": "/united-states/long-beach",
+				"los-angeles": "/united-states/los-angeles",
+				"louisville": "/united-states/louisville",
+				"lucknow": "/india/lucknow",
+				"lviv": "/ukraine/lviv",
+				"lyon": "/france/lyon",
+				"madrid": "/spain/madrid",
+				"makassar": "/indonesia/makassar",
+				"makati": "/philippines/makati",
+				"malaga": "/spain/malaga",
+				"malaysia": "/malaysia",
+				"manaus": "/brazil/manaus",
+				"manchester": "/united-kingdom/manchester",
+				"manila": "/philippines/manila",
+				"maracaibo": "/venezuela/maracaibo",
+				"maracay": "/venezuela/maracay",
+				"marseille": "/france/marseille",
+				"maturin": "/venezuela/maturin",
+				"mecca": "/saudi-arabia/mecca",
+				"medan": "/indonesia/medan",
+				"medellin": "/colombia/medellin",
+				"medina": "/saudi-arabia/medina",
+				"melbourne": "/australia/melbourne",
+				"memphis": "/united-states/memphis",
+				"mendoza": "/argentina/mendoza",
+				"merida": "/mexico/merida",
+				"mersin": "/turkey/mersin",
+				"mesa": "/united-states/mesa",
+				"mexicali": "/mexico/mexicali",
+				"mexico": "/mexico",
+				"mexico-city": "/mexico/mexico-city",
+				"miami": "/united-states/miami",
+				"middlesbrough": "/united-kingdom/middlesbrough",
+				"milan": "/italy/milan",
+				"milwaukee": "/united-states/milwaukee",
+				"minneapolis": "/united-states/minneapolis",
+				"minsk": "/belarus/minsk",
+				"mombasa": "/kenya/mombasa",
+				"monterrey": "/mexico/monterrey",
+				"montpellier": "/france/montpellier",
+				"montreal": "/canada/montreal",
+				"morelia": "/mexico/morelia",
+				"moscow": "/russia/moscow",
+				"multan": "/pakistan/multan",
+				"mumbai": "/india/mumbai",
+				"munich": "/germany/munich",
+				"murcia": "/spain/murcia",
+				"muscat": "/oman/muscat",
+				"nagoya": "/japan/nagoya",
+				"nagpur": "/india/nagpur",
+				"nairobi": "/kenya/nairobi",
+				"nantes": "/france/nantes",
+				"naples": "/italy/naples",
+				"nashville": "/united-states/nashville",
+				"naucalpan-de-juarez": "/mexico/naucalpan-de-juarez",
+				"netherlands": "/netherlands",
+				"new-haven": "/united-states/new-haven",
+				"new-orleans": "/united-states/new-orleans",
+				"new-york": "/united-states/new-york",
+				"new-zealand": "/new-zealand",
+				"newcastle": "/united-kingdom/newcastle",
+				"nezahualcoyotl": "/mexico/nezahualcoyotl",
+				"nigeria": "/nigeria",
+				"niigata": "/japan/niigata",
+				"nizhny-novgorod": "/russia/nizhny-novgorod",
+				"norfolk": "/united-states/norfolk",
+				"norway": "/norway",
+				"nottingham": "/united-kingdom/nottingham",
+				"novosibirsk": "/russia/novosibirsk",
+				"odesa": "/ukraine/odesa",
+				"okayama": "/japan/okayama",
+				"okinawa": "/japan/okinawa",
+				"oklahoma-city": "/united-states/oklahoma-city",
+				"omaha": "/united-states/omaha",
+				"oman": "/oman",
+				"omsk": "/russia/omsk",
+				"orlando": "/united-states/orlando",
+				"osaka": "/japan/osaka",
+				"oslo": "/norway/oslo",
+				"ottawa": "/canada/ottawa",
+				"pakistan": "/pakistan",
+				"palembang": "/indonesia/palembang",
+				"palermo": "/italy/palermo",
+				"palma": "/spain/palma",
+				"panama": "/panama",
+				"paris": "/france/paris",
+				"pasig": "/philippines/pasig",
+				"patna": "/india/patna",
+				"pekanbaru": "/indonesia/pekanbaru",
+				"perm": "/russia/perm",
+				"perth": "/australia/perth",
+				"peru": "/peru",
+				"petaling": "/malaysia/petaling",
+				"philadelphia": "/united-states/philadelphia",
+				"philippines": "/philippines",
+				"phoenix": "/united-states/phoenix",
+				"pittsburgh": "/united-states/pittsburgh",
+				"plymouth": "/united-kingdom/plymouth",
+				"poland": "/poland",
+				"port-elizabeth": "/south-africa/port-elizabeth",
+				"port-harcourt": "/nigeria/port-harcourt",
+				"portland": "/united-states/portland",
+				"porto-alegre": "/brazil/porto-alegre",
+				"portsmouth": "/united-kingdom/portsmouth",
+				"portugal": "/portugal",
+				"poznan": "/poland/poznan",
+				"preston": "/united-kingdom/preston",
+				"pretoria": "/south-africa/pretoria",
+				"providence": "/united-states/providence",
+				"puebla": "/mexico/puebla",
+				"puerto-rico": "/puerto-rico",
+				"pune": "/india/pune",
+				"qatar": "/qatar",
+				"quebec": "/canada/quebec",
+				"queretaro": "/mexico/queretaro",
+				"quezon-city": "/philippines/quezon-city",
+				"quito": "/ecuador/quito",
+				"rajkot": "/india/rajkot",
+				"raleigh": "/united-states/raleigh",
+				"ranchi": "/india/ranchi",
+				"rawalpindi": "/pakistan/rawalpindi",
+				"recife": "/brazil/recife",
+				"rennes": "/france/rennes",
+				"richmond": "/united-states/richmond",
+				"riga": "/latvia/riga",
+				"rio-de-janeiro": "/brazil/rio-de-janeiro",
+				"riyadh": "/saudi-arabia/riyadh",
+				"rome": "/italy/rome",
+				"rosario": "/argentina/rosario",
+				"rostov-on-don": "/russia/rostov-on-don",
+				"rotterdam": "/netherlands/rotterdam",
+				"russia": "/russia",
+				"sacramento": "/united-states/sacramento",
+				"sagamihara": "/japan/sagamihara",
+				"saint-petersburg": "/russia/saint-petersburg",
+				"saitama": "/japan/saitama",
+				"salt-lake-city": "/united-states/salt-lake-city",
+				"saltillo": "/mexico/saltillo",
+				"salvador": "/brazil/salvador",
+				"samara": "/russia/samara",
+				"san-antonio": "/united-states/san-antonio",
+				"san-diego": "/united-states/san-diego",
+				"san-francisco": "/united-states/san-francisco",
+				"san-jose": "/united-states/san-jose",
+				"san-luis-potosi": "/mexico/san-luis-potosi",
+				"santiago": "/chile/santiago",
+				"santo-domingo": "/dominican-republic/santo-domingo",
+				"sao-luis": "/brazil/sao-luis",
+				"sao-paulo": "/brazil/sao-paulo",
+				"sapporo": "/japan/sapporo",
+				"saudi-arabia": "/saudi-arabia",
+				"seattle": "/united-states/seattle",
+				"semarang": "/indonesia/semarang",
+				"sendai": "/japan/sendai",
+				"seongnam": "/korea/seongnam",
+				"seoul": "/korea/seoul",
+				"seville": "/spain/seville",
+				"sharjah": "/united-arab-emirates/sharjah",
+				"sheffield": "/united-kingdom/sheffield",
+				"singapore": "/singapore",
+				"south-africa": "/south-africa",
+				"soweto": "/south-africa/soweto",
+				"spain": "/spain",
+				"srinagar": "/india/srinagar",
+				"st.-louis": "/united-states/st-louis",
+				"stockholm": "/sweden/stockholm",
+				"stoke-on-trent": "/united-kingdom/stoke-on-trent",
+				"strasbourg": "/france/strasbourg",
+				"stuttgart": "/germany/stuttgart",
+				"surabaya": "/indonesia/surabaya",
+				"surat": "/india/surat",
+				"suwon": "/korea/suwon",
+				"swansea": "/united-kingdom/swansea",
+				"sweden": "/sweden",
+				"switzerland": "/switzerland",
+				"sydney": "/australia/sydney",
+				"taguig": "/philippines/taguig",
+				"takamatsu": "/japan/takamatsu",
+				"tallahassee": "/united-states/tallahassee",
+				"tampa": "/united-states/tampa",
+				"tangerang": "/indonesia/tangerang",
+				"tel-aviv": "/israel/tel-aviv",
+				"thailand": "/thailand",
+				"thane": "/india/thane",
+				"thessaloniki": "/greece/thessaloniki",
+				"tijuana": "/mexico/tijuana",
+				"tokyo": "/japan/tokyo",
+				"toluca": "/mexico/toluca",
+				"toronto": "/canada/toronto",
+				"toulouse": "/france/toulouse",
+				"tucson": "/united-states/tucson",
+				"turin": "/italy/turin",
+				"turkey": "/turkey",
+				"turmero": "/venezuela/turmero",
+				"ufa": "/russia/ufa",
+				"ukraine": "/ukraine",
+				"ulsan": "/korea/ulsan",
+				"united-arab-emirates": "/united-arab-emirates",
+				"united-kingdom": "/united-kingdom",
+				"united-states": "/united-states",
+				"utrecht": "/netherlands/utrecht",
+				"valencia": "/venezuela/valencia",
+				"valencia_es": "/spain/valencia",
+				"valparaiso": "/chile/valparaiso",
+				"vancouver": "/canada/vancouver",
+				"venezuela": "/venezuela",
+				"vienna": "/austria/vienna",
+				"vietnam": "/vietnam",
+				"virginia-beach": "/united-states/virginia-beach",
+				"vladivostok": "/russia/vladivostok",
+				"volgograd": "/russia/volgograd",
+				"voronezh": "/russia/voronezh",
+				"warsaw": "/poland/warsaw",
+				"washington": "/united-states/washington",
+				"winnipeg": "/canada/winnipeg",
+				"wroclaw": "/poland/wroclaw",
+				"yekaterinburg": "/russia/yekaterinburg",
+				"yokohama": "/japan/yokohama",
+				"yongin": "/korea/yongin",
+				"zamboanga-city": "/philippines/zamboanga-city",
+				"zapopan": "/mexico/zapopan",
+				"zaporozhye": "/ukraine/zaporozhye",
+				"zaragoza": "/spain/zaragoza",
+				"zurich": "/switzerland/zurich"
+			}
+		},
+		"location": {
+			"description": "Local onde o módulo pode ser encontrado, apenas para referência",
+			"types": ["string"],
+			"value": "./index"
+		},
+		"stock": {
+			"description": "Uma object para uso padrão, caso seja modo teste ou algum erro ocorra, assim você não será afetado diretamente",
+			"types": ["object"],
+			"value": {
+				"date": "3/25/2023, 2:03:05 PM",
+				"error": false,
+				"dev_msg": false,
+				"error_msg": false,
+				"code": 200,
+				"nodeDetails": {
+					"isError": false,
+					"code": false,
+					"message": false
+				},
+				"explain": {
+					"code": "OK",
+					"why": "The request is OK, this response depends on the HTTP method used."
+				},
+				"headers": {
+					"connection": "close",
+					"date": "Sat, 25 Mar 2023 17:03:05 GMT",
+					"last-modified": "Sat, 25 Mar 2023 16:59:19 GMT"
+				},
+				"tweet": [{
+					"count": "1266K",
+					"url": "https://twitter.com/search?q=Messi",
+					"trend": "Messi"
+				}]
+			}
+		},
+		"codes": {
+			"description": "Referencia aos códigos de erro existentes",
+			"types": ["object"],
+			"value": {
+				"0": {
+					"code": "Not Error",
+					"why": "Default message to default response from code."
+				},
+				"100": {
+					"code": "Continue",
+					"why": "It's a temporary answer, it means no problem and the script will continue or will be ignored if it's already finished."
+				},
+				"101": {
+					"code": "Switching Protocols",
+					"why": "This means that the code is changing the access protocol."
+				},
+				"102": {
+					"code": "Processing",
+					"why": "The server received the request and is working on it, but still have no response."
+				},
+				"103": {
+					"code": "Early Hints",
+					"why": "The agent needs to preload resources until the server creates a response."
+				},
+				"200": {
+					"code": "OK",
+					"why": "The request is OK, this response depends on the HTTP method used."
+				},
+				"201": {
+					"code": "Created",
+					"why": "The request is OK and a new resource was created, it is usually sent in POST methods"
+				},
+				"202": {
+					"code": "Accepted",
+					"why": "The request is OK, but no action was taken, this can happen when the server handles batch processing, or redirects to other locations."
+				},
+				"203": {
+					"code": "Non-Authoritative Information",
+					"why": "The request is OK, but the response is not the exact response from the server and is from third-party or local copies."
+				},
+				"204": {
+					"code": "No Content",
+					"why": "The request is OK but no response, maybe headers could be useful."
+				},
+				"205": {
+					"code": "Reset Content",
+					"why": "The request is OK, this code means that the server received and made the request, but wants to reset the document view, sending the original state of the origin server."
+				},
+				"206": {
+					"code": "Partial Content",
+					"why": "The request is OK, the body contains the byte sequence of the data based on the range header, basically it is the partial data received from the request."
+				},
+				"207": {
+					"code": "Multi-Status",
+					"why": "The request may be OK, there are multiple status codes in the body, which means you need to check the body of the multi-status response for more information."
+				},
+				"208": {
+					"code": "Already Reported",
+					"why": "This means that requests are a collection of repeated requests, of which only one received as 200, usually means that the request discovered a loop."
+				},
+				"226": {
+					"code": "IM Used",
+					"why": "The request is OK, but the response is the same as one or more results from the instance, usually it means the instance is cached."
+				},
+				"300": {
+					"code": "Multiple Choices",
+					"why": "This means that the answer has several options, the user has to choose one of them, but there is no standard method for choosing."
+				},
+				"301": {
+					"code": "Moved Permanently",
+					"why": "The code means the URI was changed, maybe the new URI was sent in the body."
+				},
+				"302": {
+					"code": "Found",
+					"why": "This means that the URI has been changed temporarily and in the future it may be changed permanently, but you must use the same URI for now."
+				},
+				"303": {
+					"code": "See Other",
+					"why": "The server instructed you to get the answer from another server."
+				},
+				"304": {
+					"code": "Not Modified",
+					"why": "This code is used when the server says the response hasn't changed and the user can use the same response from the cache."
+				},
+				"305": {
+					"code": "Use Proxy",
+					"why": "This means that the user has to use a proxy to access that server and get the response, this code is obsolete."
+				},
+				"306": {
+					"code": "Unused",
+					"why": "This code is obsolete but can be found and used in the old HTTP version 1.1"
+				},
+				"307": {
+					"code": "Temporary Redirect",
+					"why": "It's similar to 302 code, the server tells the user to get the response from other servers, but using the same method."
+				},
+				"308": {
+					"code": "Permanent Redirect",
+					"why": "It is similar to 301 code, the server informs the user that it has permanently changed and needs to get the response from another server, but using the same method."
+				},
+				"400": {
+					"code": "Bad Request",
+					"why": "The servers did not recognize the request because it contains invalid syntax."
+				},
+				"401": {
+					"code": "Unauthorized",
+					"why": "The user is not allowed to access the server, the user needs to authenticate to get the response."
+				},
+				"402": {
+					"code": "Payment Required",
+					"why": "This code will be used in the future (or now), the purpose is to use it in payment requests, but it doesn't seem to be used currently."
+				},
+				"403": {
+					"code": "Forbidden",
+					"why": "Similar to 401 code, but this means that the server recognizes the user, but he still does not have permission to access the content, causing the server to refuse access."
+				},
+				"404": {
+					"code": "Not Found",
+					"why": "This famous code means the resource cannot be found, it means the server doesn't have the answer, URL or something needed."
+				},
+				"405": {
+					"code": "Method Not Allowed",
+					"why": "The server recognizes this method but is disabled, which means the user needs to use another method, usually GET and HEAD work."
+				},
+				"406": {
+					"code": "Not Acceptable",
+					"why": "This code means that the server tried to find the answer based on the user's criteria, but no content was found."
+				},
+				"407": {
+					"code": "Proxy Authentication Required",
+					"why": "Similar to 401 or 305, but means authentication needs to be done via proxy."
+				},
+				"408": {
+					"code": "Request Timeout",
+					"why": "Another famous code, this means that the request has timed out, normally the request is idle and the server takes it down."
+				},
+				"409": {
+					"code": "Conflict",
+					"why": "This code is sent when the server conflicts with the sent request."
+				},
+				"410": {
+					"code": "Gone",
+					"why": "This means that the server permanently deleted the content, with no redirect address, usually used in time limited resources."
+				},
+				"411": {
+					"code": "Length Required",
+					"why": "The server rejected the request because the user needs to set the 'Content-Length' header."
+				},
+				"412": {
+					"code": "Precondition Failed",
+					"why": "The headers do not have the necessary conditions to access the server."
+				},
+				"413": {
+					"code": "Payload Too Large",
+					"why": "The request has a large payload that is greater than the server limit, the server may close the request or return a 'Retry-After' header."
+				},
+				"414": {
+					"code": "URI Too Long",
+					"why": "The server received a URI much larger than the limit."
+				},
+				"415": {
+					"code": "Unsupported Media Type",
+					"why": "The server doesn't support the media format type, so it closed the request."
+				},
+				"416": {
+					"code": "Range Not Satisfiable",
+					"why": "It usually means that the URI does not have the satisfiable range, which needs to be defined in the 'Range' header."
+				},
+				"417": {
+					"code": "Expectation Failed",
+					"why": "It means the 'Expect' header cannot be satisfied by the server."
+				},
+				"418": {
+					"code": "I'm a Teapot",
+					"why": "The server refuses the attempt to brew coffee in a teapot."
+				},
+				"421": {
+					"code": "Misdirected Request",
+					"why": "Request redirected from server to another server which cannot send a response, user can try again to see if the request works."
+				},
+				"422": {
+					"code": "Unprocessable Entity",
+					"why": "The request was well formed but is disabled due to some semantic errors."
+				},
+				"423": {
+					"code": "Locked",
+					"why": "The request attempted to access some blocked server resource."
+				},
+				"424": {
+					"code": "Failed Dependency",
+					"why": "The request failed because of some previous request."
+				},
+				"425": {
+					"code": "Too Early",
+					"why": "The server doesn't want to make the request because it can be redone."
+				},
+				"426": {
+					"code": "Upgrade Required",
+					"why": "The server refused the request made by this method, but this will be done after the user changes the request method, maybe the header includes the required method."
+				},
+				"428": {
+					"code": "Precondition Required",
+					"why": "The server wants the response to be conditional, this is used to block access to the server to avoid 'Update lost' error when the server can be modified by third party people."
+				},
+				"429": {
+					"code": "Too Many Requests",
+					"why": "Another famous error, this one is sent when the user has made too many requests in a short time."
+				},
+				"431": {
+					"code": "Request Header Fields Too Large",
+					"why": "The server refuses the request because the header fields are too large, can be fixed by reducing the header fields and trying again."
+				},
+				"451": {
+					"code": "Unavailable For Legal Reasons",
+					"why": "The user requested some illegal content that was censored by the government."
+				},
+				"500": {
+					"code": "Internal Server Error",
+					"why": "The server cannot complete the request due to some internal error that it cannot fix on its own."
+				},
+				"501": {
+					"code": "Not Implemented",
+					"why": "It means the server doesn't support the method, usually the default methods are 'GET' and 'HEAD', try with one of them."
+				},
+				"502": {
+					"code": "Bad Gateway",
+					"why": "The server received an invalid response due to an error with the gateway."
+				},
+				"503": {
+					"code": "Service Unavailable",
+					"why": "Another famous error, the server is not available, usually means the server is under maintenance or overloaded, it usually includes a header explaining when to try again and the warning about the error."
+				},
+				"504": {
+					"code": "Gateway Timeout",
+					"why": "This code means that the server is working with the gateway and cannot send a response in time."
+				},
+				"505": {
+					"code": "HTTP Version Not Supported",
+					"why": "This means that the user's HTTP version is not supported by this server."
+				},
+				"506": {
+					"code": "Variant Also Negotiates",
+					"why": "The server has an internal configuration error, it usually means the server referenced a circular request."
+				},
+				"507": {
+					"code": "Insufficient Storage",
+					"why": "The server has an internal configuration error, it usually means that the server is configured to initiate a content request with itself, or that it does not have enough operating space."
+				},
+				"508": {
+					"code": "Loop Detected",
+					"why": "The server detected some internal loop on request."
+				},
+				"509": {
+					"code": "Bandwidth Limit Exceeded",
+					"why": "The server has the maximum access traffic assigned."
+				},
+				"510": {
+					"code": "Not Extended",
+					"why": "The server requires post-request extensions to handle the request."
+				},
+				"511": {
+					"code": "Network Authentication Required",
+					"why": "This code means that the user needs to authenticate himself to have access to some network."
+				}
+			}
+		}
+	},
+	"results": {
+		"description": "O resultado da função, sendo o padrão em caso de erro",
+		"types": ["boolean", "object"],
+		"value": false
+	}
+}

@@ -1,7 +1,7 @@
 {
   "name": "@killovsky/trendings",
-  "version": "1.0.2",
-  "description": "Repositório do módulo scrapper para obtenção de trendings do Twitter.",
+  "version": "1.0.3",
+  "description": "Módulo sem dependências que obtém as trends mais usadas do Twitter em um período de até 24 horas.",
   "main": "index.js",
   "scripts": {
     "test": "node test.js"
@@ -11,18 +11,28 @@
     "url": "git+https://github.com/KillovSky/Trendings.git"
   },
   "keywords": [
-    "twitter",
-    "tweet",
-    "trends",
-    "trendings",
-    "network",
-    "social",
-    "hashtag",
+    "API",
+    "customization",
+    "dados",
     "data",
-    "srapper",
+    "easy",
+    "hashtag",
+    "hashtags",
     "information",
+    "informação",
+    "network",
+    "rede social",
+    "scraper",
+    "social",
+    "srapper",
+    "tendências",
     "topics",
-    "trends24"
+    "trending topics",
+    "trendings",
+    "trends",
+    "trends24",
+    "tweet",
+    "twitter"
   ],
   "author": "KillovSky",
   "license": "MIT",
@@ -42,6 +52,10 @@
     {
       "type": "picpay",
       "url": "https://picpay.me/userlucas123"
+    },
+    {
+      "type": "all",
+      "url": "https://github.com/KillovSky#-fundings"
     }
   ]
 }
