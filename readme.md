@@ -45,7 +45,7 @@
 ------ 
   
 ## O que este módulo faz?  
-- Ele utiliza o site [Trends24](https://trends24.in/) para obter as trends, sem necessidade de módulos como `cheerio` ou `puppeteer`.  
+- Ele utiliza o site [twitter trending](https://trending-1.com/) para obter as trends, sem necessidade de módulos como `cheerio` ou `puppeteer`.  
   
 ------ 
   
