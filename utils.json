@@ -1,6 +1,7 @@
 {
 	"name": "Trends",
-	"description": "Módulo sem dependências que faz a obtenção das trendings do Twitter",
+	"version": "1.0.4",
+	"description": "Módulo sem dependências que faz a obtenção das trendings do X, anteriormente conhecido como Twitter",
 	"developer": "KillovSky",
 	"projects": "https://github.com/KillovSky",
 	"license": "MIT",
@@ -48,22 +49,30 @@
 	"settings": {
 		"wait": {
 			"description": "Tempo em MS que deve esperar antes de resetar",
-			"types": ["boolean"],
+			"types": [
+				"boolean"
+			],
 			"value": 5000
 		},
 		"error": {
 			"description": "Define se pode printar os erros em 'human-like' no console",
-			"types": ["boolean"],
+			"types": [
+				"boolean"
+			],
 			"value": false
 		},
 		"fail": {
 			"description": "Define se a envInfo deve ser resetada em casos de erro",
-			"types": ["boolean"],
+			"types": [
+				"boolean"
+			],
 			"value": true
 		},
 		"finish": {
 			"description": "Define se deve resetar a cada utilização",
-			"types": ["boolean"],
+			"types": [
+				"boolean"
+			],
 			"value": true
 		}
 	},
@@ -71,68 +80,105 @@
 		"ambient": {
 			"arguments": false,
 			"description": "Retorna as variáveis e sistemas do arquivo",
-			"types": ["boolean", "function"],
+			"types": [
+				"boolean",
+				"function"
+			],
 			"value": false
 		},
 		"packs": {
 			"arguments": false,
 			"description": "Retorna os dados da package.json",
-			"types": ["boolean", "function"],
+			"types": [
+				"boolean",
+				"function"
+			],
 			"value": false
 		},
 		"fail": {
 			"arguments": {
 				"error": {
 					"description": "Instância de erro para formatação",
-					"types": ["boolean", "Error"],
+					"types": [
+						"boolean",
+						"Error"
+					],
 					"value": false
 				}
 			},
 			"description": "Formata em 'human-like' os erros recebidos",
-			"types": ["boolean", "function"],
+			"types": [
+				"boolean",
+				"function"
+			],
 			"value": false
 		},
 		"info": {
 			"arguments": {
 				"worldName": {
 					"description": "Nome do país, estado ou local de onde as trendings serão obtidas",
-					"types": ["string"],
+					"types": [
+						"string"
+					],
 					"value": "worldwide"
 				}
 			},
 			"description": "Obtém as trendings de determinado local do mundo",
-			"types": ["boolean", "function"],
+			"types": [
+				"boolean",
+				"function"
+			],
 			"value": false
 		},
 		"dump": {
 			"arguments": {
 				"response": {
 					"description": "Qualquer tipo de dado que for enviado",
-					"types": ["undefined", "object", "boolean", "number", "bigint", "string", "symbol", "function"],
+					"types": [
+						"undefined",
+						"object",
+						"boolean",
+						"number",
+						"bigint",
+						"string",
+						"symbol",
+						"function"
+					],
 					"value": false
 				}
 			},
 			"description": "Printa o resultado e determina se a envInfo deve ser resetada ou em quanto tempo isso ocorrerá",
-			"types": ["boolean", "function"],
+			"types": [
+				"boolean",
+				"function"
+			],
 			"value": false
 		},
 		"reset": {
 			"arguments": {
 				"changeKey": {
 					"description": "Uma object similar a envInfo, incluindo apenas os valores das quais quer editar no código, sendo um argumento opcional",
-					"types": ["boolean", "object"],
+					"types": [
+						"boolean",
+						"object"
+					],
 					"value": false
 				}
 			},
 			"description": "Reseta todos os usos, detalhes e demais itens do módulo",
-			"types": ["boolean", "function"],
+			"types": [
+				"boolean",
+				"function"
+			],
 			"value": false
 		}
 	},
 	"parameters": {
 		"alias": {
 			"description": "Sistema de alias para não ser preciso inserir todo o sufixo",
-			"types": ["object"],
+			"types": [
+				"object"
+			],
 			"value": {
 				"worldwide": "/",
 				"abu-dhabi": "/united-arab-emirates/abu-dhabi",
@@ -604,14 +650,18 @@
 		},
 		"location": {
 			"description": "Local onde o módulo pode ser encontrado, apenas para referência",
-			"types": ["string"],
+			"types": [
+				"string"
+			],
 			"value": "./index"
 		},
 		"stock": {
 			"description": "Uma object para uso padrão, caso seja modo teste ou algum erro ocorra, assim você não será afetado diretamente",
-			"types": ["object"],
+			"types": [
+				"object"
+			],
 			"value": {
-				"date": "3/25/2023, 2:03:05 PM",
+				"date": "22/07/2024, 22:22:00",
 				"error": false,
 				"dev_msg": false,
 				"error_msg": false,
@@ -627,19 +677,24 @@
 				},
 				"headers": {
 					"connection": "close",
-					"date": "Sat, 25 Mar 2023 17:03:05 GMT",
-					"last-modified": "Sat, 25 Mar 2023 16:59:19 GMT"
+					"date": "Tue, 23 Jul 2024 01:26:19 GMT",
+					"last-modified": "Tue, 23 Jul 2024 01:23:07 GMT"
 				},
-				"tweet": [{
-					"count": "1266K",
-					"url": "https://twitter.com/search?q=Messi",
-					"trend": "Messi"
-				}]
+				"tweet": [
+					{
+						"url": "https://twitter.com/search?q=Trump",
+						"trend": "Trump",
+						"count": "6.7M",
+						"countraw": "6686521"
+					}
+				]
 			}
 		},
 		"codes": {
 			"description": "Referencia aos códigos de erro existentes",
-			"types": ["object"],
+			"types": [
+				"object"
+			],
 			"value": {
 				"0": {
 					"code": "Not Error",
@@ -906,7 +961,10 @@
 	},
 	"results": {
 		"description": "O resultado da função, sendo o padrão em caso de erro",
-		"types": ["boolean", "object"],
+		"types": [
+			"boolean",
+			"object"
+		],
 		"value": false
 	}
 }

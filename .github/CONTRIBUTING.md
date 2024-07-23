@@ -6,7 +6,7 @@
 - Leia mais sobre reportar esses tipos de dados no [Security.md](https://github.com/KillovSky/Trendings/blob/main/.github/SECURITY.md).
 
 ## Enviando sugestões e melhorias
-- Se você tiver ideias para melhorar o módulo, basta entrar em contato por meio das [Issues](https://github.com/KillovSky/Trendings/issues?q=), utilizar uma rede social como [Essas](https://github.com/KillovSky#-social) ou obviamente, usar o meio mais fácil e mais recomendado, as `pull-requests`.
+- Se você tiver ideias para melhorar o módulo, basta entrar em contato por meio das [Issues](https://github.com/KillovSky/Trendings/issues?q=), utilizar uma rede social como [Essas](https:/linktr.ee/killovsky) ou obviamente, usar o meio mais fácil e mais recomendado, as `pull-requests`.
 
 # Enviando uma pull-request
 - Para fazer uma melhoria, siga os seguintes passos:

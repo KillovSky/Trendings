@@ -1,5 +1,16 @@
 # Changelog
 
+## [v1.0.4] - 22/07/2024
+
+### Corrigido
+- Corrigido erro na obtenção dos Trendings devido a mudanças na estrutura do site Trends 24 que afetaram a extração dos dados.
+
+### Melhorias
+- Inserção de JSDoc para documentação simples das funções.
+- Reajuste dos arquivos JSON para melhor clareza e eficiência.
+- Ajuste na documentação extra do módulo.
+- Outras melhorias gerais de código para otimização, redução de complexidade e legibilidade.
+
 ## [v1.0.3] - 26/03/2023
 
 ### Adicionado

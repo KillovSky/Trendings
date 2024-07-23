@@ -1,7 +1,7 @@
 {
   "name": "@killovsky/trendings",
-  "version": "1.0.3",
-  "description": "Módulo sem dependências que obtém as trends mais usadas do Twitter em um período de até 24 horas.",
+  "version": "1.0.4",
+  "description": "Módulo sem dependências que obtém as trends mais usadas do X (Twitter), sua contagem de views e sua URL nas últimas 24 horas.",
   "main": "index.js",
   "scripts": {
     "test": "node test.js"
@@ -46,16 +46,8 @@
       "url": "http://ko-fi.com/killovsky"
     },
     {
-      "type": "paypal",
-      "url": "https://bit.ly/33QDaGa"
-    },
-    {
-      "type": "picpay",
-      "url": "https://picpay.me/userlucas123"
-    },
-    {
-      "type": "all",
-      "url": "https://github.com/KillovSky#-fundings"
+      "type": "others",
+      "url": "https://linktr.ee/killovsky"
     }
   ]
 }

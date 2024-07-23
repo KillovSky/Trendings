@@ -1,12 +1,38 @@
+/* eslint-disable max-len */
+
 /* Requires */
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
-/* Definições padrão do código */
+/**
+ * Informações de configuração para a execução da função, carregadas a partir de um arquivo JSON.
+ * @type {Object}
+ * @property {string} name - O nome do módulo.
+ * @property {string} version - A versão atual do módulo.
+ * @property {string} description - A descrição detalhada do módulo e sua funcionalidade.
+ * @property {string} developer - O nome do desenvolvedor responsável pelo módulo.
+ * @property {string} projects - O link para o repositório do projeto no GitHub.
+ * @property {string} license - A licença sob a qual o módulo é distribuído.
+ * @property {Object} usage - Informações sobre como utilizar o módulo.
+ * @property {string} usage.general - Exemplo genérico de uso do módulo.
+ * @property {string[]} usage.examples - Exemplos específicos de utilização do módulo.
+ * @property {Object[]} helps - Orientações e dicas para utilizar o módulo de forma eficaz.
+ * @property {Object} exports - Métodos e funcionalidades exportadas pelo módulo.
+ * @property {Object} files - Arquivos relevantes associados ao módulo.
+ * @property {Object} modules - Dependências externas necessárias para o funcionamento do módulo.
+ * @property {Object} settings - Configurações e opções personalizáveis do módulo.
+ * @property {Object} functions - Funções disponíveis para interação com o módulo.
+ * @property {Object} parameters - Parâmetros e configurações adicionais para personalização do módulo.
+ * @property {Object} results - Resultados e saídas esperadas da função do módulo.
+ */
 let envInfo = JSON.parse(fs.readFileSync(`${__dirname}/utils.json`));
 
-/* Realiza funções de pós finalização */
+/**
+ * Realiza operações de pós-processamento e retorna os dados.
+ * @param {Object} response - Objeto contendo os resultados da operação.
+ * @returns {Object} O mesmo objeto de resposta recebido.
+ */
 function postResults(response) {
     /* Verifica se pode resetar a envInfo */
     if ((envInfo.settings.finish.value === true)
@@ -27,7 +53,11 @@ function postResults(response) {
     return response;
 }
 
-/* Insere o erro na envInfo, não reseta pois o erro pode ser na envInfo */
+/**
+ * Registra um erro no objeto de informações na envInfo.
+ * @param {Error} error - O erro a ser registrado.
+ * @returns {Object} O objeto de erro formatado.
+ */
 function echoError(error) {
     /* Determina o erro */
     const myError = !(error instanceof Error) ? new Error(`Received a instance of '${typeof error}' in function 'fail', expected an instance of 'Error'.`) : error;
@@ -51,13 +81,23 @@ function echoError(error) {
     return envInfo.results.value;
 }
 
-/* Função que retorna todo o arquivo */
+/**
+ * Retorna o objeto de informações do envInfo.
+ * @returns {Object} O objeto de informações do ambiente.
+ */
 const ambientDetails = () => envInfo;
 
-/* Função que retorna a package.json */
+/**
+ * Retorna o conteúdo do arquivo package.json.
+ * @returns {Object} O conteúdo do arquivo package.json como objeto.
+ */
 const packageInfo = () => JSON.parse(fs.readFileSync(`${__dirname}/package.json`));
 
-/* Cria uma função de busca usando os valores da envInfo como padrão */
+/**
+ * Obtém os trending topics de um determinado país ou estado.
+ * @param {string} [worldName=envInfo.functions.info.arguments.worldName.value] - Nome do local para obter os trendings.
+ * @returns {Promise<Object>} Uma Promise que resolve com os resultados da busca de Trendings.
+ */
 function getTrendings(
     worldName = envInfo.functions.info.arguments.worldName.value,
 ) {
@@ -132,44 +172,38 @@ function getTrendings(
                     /* Ao receber todo o HTML */
                     res.on('end', () => {
                         /* Define a RegExp */
-                        const parseRegExp = /<li><a href="(https:\/\/twitter.com\/search\?q=[^"]+)">([^<]+)<\/a>(?:<br><span class=tweet-count>(\d+)K<\/span>)?<\/li>/g;
+                        const parseRegExp = /<a\s+href="([^"]+)"\s+class=trend-link>([^<]+)<\/a>(?:<span\s+class=tweet-count\s+data-count=(\d*)>([^<]*)<\/span>)?/gi;
 
-                        /* Define os resultados do parse do HTML */
+                        /* Realiza o matchAll na string HTML */
                         let result = [...data.matchAll(parseRegExp)];
 
-                        /* Filtra apenas os resultados que sejam uma trending com URL */
-                        result = result.filter((trends) => trends[1].includes('search'));
+                        /* Mapeia os resultados para o formato desejado */
+                        result = result.map((match) => ({
+                            url: match[1],
+                            trend: match[2],
+                            count: match[4] || '0K',
+                            countraw: match[3] || '0',
+                        }));
 
-                        /* Ajusta os resultados para que os sem contadores tenham um valor de 0K */
-                        result = result.map((trends) => ({ url: trends[1], trend: trends[2], count: trends[3] || '0' }));
+                        /* Ordena os resultados por count (countraw) de forma decrescente */
+                        result.sort((a, b) => parseInt(b.countraw, 10) - parseInt(a.countraw, 10));
 
-                        /* Remove duplicados */
-                        result = [...new Map(result.map((item) => [item.trend, item])).values()];
-
-                        /* Remove os duplicados mantendo as Objects com maior valor */
-                        result = result.reduce((acc, item) => {
-                            /* Se não tiver ou se tiver mas for um de menos trends */
-                            if (!acc[item.trend]
-                                || parseInt(item.count, 10) > parseInt(acc[item.trend].count, 10)
+                        /* Remove duplicados mantendo o de maior count */
+                        result = Object.values(result.reduce((acc, item) => {
+                            /* Se o valor do duplicado for maior que o original */
+                            if (
+                                !acc[item.trend]
+                                || parseInt(acc[item.trend].countraw, 10) < parseInt(item.countraw, 10)
                             ) {
-                                /* Insere ou substitui pelo novo */
+                                /* Seleciona ele como object correta */
                                 acc[item.trend] = item;
                             }
 
-                            /* Retorna os valores */
+                            /* Se não, retorna sem assimilar nada, mantendo o original */
                             return acc;
 
-                            /* Envia uma Object vazia para ir preenchendo com reduce */
-                        }, {});
-
-                        /* Converte em uma Array de Objects */
-                        result = Object.values(result);
-
-                        /* Organiza por quantidade de trends feitas */
-                        result = result.sort((a, b) => b.count - a.count);
-
-                        /* Insere o 'K' dos counts */
-                        result = result.map((trends) => ({ url: trends.url, trend: trends.trend, count: `${trends.count}K` }));
+                            /* Inicializa com uma object vazia */
+                        }, {}));
 
                         /* Define a resposta na envInfo */
                         response.tweet = result;
@@ -218,7 +252,11 @@ function getTrendings(
     });
 }
 
-/* Faz a injeção das outras funções, não use com obj-in-obj a menos que realmente queira! */
+/**
+ * Reinicia as informações do ambiente para o estado inicial e exporta de forma módular.
+ * @param {Object} [changeKey={}] - Objeto opcional para alterar chaves específicas no ambiente.
+ * @returns {Object} O objeto exportado com as funções atualizadas.
+ */
 function resetAmbient(
     changeKey = {},
 ) {

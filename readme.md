@@ -7,30 +7,30 @@
     <a href="https://github.com/KillovSky/Trendings/blob/master/LICENSE">  
         <img alt="GitHub License" src="https://img.shields.io/github/license/KillovSky/Trendings?color=blue&label=Licence&style=flat-square">  
     </a>  
-	<a href="https://github.com/KillovSky/Trendings/blob/master/package.json">  
+    <a href="https://github.com/KillovSky/Trendings/blob/master/package.json">  
         <img alt="GitHub Version" src="https://img.shields.io/github/package-json/v/KillovSky/Trendings?label=Build&style=flat-square">  
-	</a>  
-	<a href="https://github.com/KillovSky/Trendings/commits/main">  
+    </a>  
+    <a href="https://github.com/KillovSky/Trendings/commits/main">  
         <img alt="GitHub Updates" src="https://img.shields.io/github/commit-activity/y/KillovSky/Trendings?label=Updates&style=flat-square">  
-	</a>  
-	<a href="https://github.com/KillovSky/Trendings/stargazers/">  
+    </a>  
+    <a href="https://github.com/KillovSky/Trendings/stargazers/">  
         <img title="GitHub Stars" src="https://img.shields.io/github/stars/KillovSky/Trendings?label=Stars&style=flat-square">  
-	</a>  
-	<a href="https://github.com/KillovSky/Trendings/network/members">  
+    </a>  
+    <a href="https://github.com/KillovSky/Trendings/network/members">  
         <img title="GitHub Forks" src="https://img.shields.io/github/forks/KillovSky/Trendings?label=Forks&style=flat-square">  
-	</a>  
-	<a href="https://github.com/KillovSky/Trendings/watchers">  
+    </a>  
+    <a href="https://github.com/KillovSky/Trendings/watchers">  
         <img title="GitHub Watch" src="https://img.shields.io/github/watchers/KillovSky/Trendings?label=Watchers&style=flat-square">  
-	</a>  
-	<a href="https://www.codefactor.io/repository/github/KillovSky/Trendings">  
+    </a>  
+    <a href="https://www.codefactor.io/repository/github/KillovSky/Trendings">  
         <img alt="Codefactor" src="https://www.codefactor.io/repository/github/KillovSky/Trendings/badge">  
-	</a>  
-	<a href="http://isitmaintained.com/project/KillovSky/Trendings">  
+    </a>  
+    <a href="http://isitmaintained.com/project/KillovSky/Trendings">  
         <img alt="Is maintained" src="http://isitmaintained.com/badge/resolution/KillovSky/Trendings.svg">  
-	</a>  
+    </a>  
 </p>  
   
------- 
+------  
   
 ## Introdução  
 - Detalhes importantes que estão em outros arquivos:  
@@ -42,12 +42,12 @@
 5. [Ver mais projetos](https://github.com/KillovSky)  
 6. [Fazer uma donate](https://github.com/KillovSky#-fundings)  
   
------- 
+------  
   
 ## O que este módulo faz?  
-- Ele utiliza o site [Trends24](https://trends24.in/) para obter as trends, sem necessidade de módulos como `cheerio` ou `puppeteer`.  
+- Este módulo utiliza o site [Trends24](https://trends24.in/) para obter as trends atuais do X (Twitter) sem a necessidade de módulos como `cheerio`, `puppeteer` ou instalação adicional de outros módulos e sistemas.  
   
------- 
+------  
   
 ## Instalação:  
 - Rode o código abaixo para instalar via `NPM`:  
@@ -61,7 +61,7 @@ $ npm i @killovsky/trendings
 $ git clone https://github.com/KillovSky/Trendings.git  
 ```  
   
------- 
+------  
   
 ## O que este módulo tem de especial?  
 - Assim como o da [NASA](https://github.com/KillovSky/NASA), muitas coisas, confira abaixo:  
@@ -75,7 +75,7 @@ $ git clone https://github.com/KillovSky/Trendings.git
 >  
 > 4. Não existem dependências de módulos de terceiro, tudo é feito usando o puro `Node.js`.  
 >  
-> 5. Cada linha do código possui uma explicação do que está rodando ou vai rodar, ou seja, o código INTEIRO é explicado, linha por linha.   
+> 5. Cada linha do código possui uma explicação do que está rodando ou vai rodar, ou seja, o código INTEIRO é explicado, linha por linha.  
 >  
 > 6. As trends são automaticamente formatadas em ordem decrescente [130, 129, 128...] de acordo com a quantidade de tweets feitos.  
 >  
@@ -91,10 +91,12 @@ $ git clone https://github.com/KillovSky/Trendings.git
 $ npm test  
 ```  
   
------- 
+- Ou acessar isso: [NpmJS Runkit - KillovSky@Trendings](https://npm.runkit.com/%40killovsky%2Ftrendings)  
+  
+------  
   
 ## Como utilizar este módulo:  
-- Existem diversas formas de utilizar, mas como se trata de um script que faz uso de `Promises`, irei dar dois exemplos que funcionam bem, lembrando, você pode rodar sem especificar nada pois também funciona desta forma.   
+- Existem diversas formas de utilizar, mas como se trata de um script que faz uso de `Promises`, irei dar dois exemplos que funcionam bem, lembrando, você pode rodar sem especificar nada pois também funciona desta forma.  
 - Clique em uma das linhas/setas abaixo para exibir os detalhes!  
 - Clique [aqui](https://github.com/KillovSky/Trendings/blob/master/utils.json) para ver detalhes do ambiente de código e suas funções.  
   
@@ -102,7 +104,7 @@ $ npm test
 <summary><code>Descrição de cada parâmetro da execução:</code></summary>  
   
 ```javascript  
-// Função responsável por todo o código  
+/* Função responsável por todo o código */  
 info('local')  
   
 /* ------------------------------------- *  
@@ -110,43 +112,44 @@ info('local')
 * Valores: string  
 * Padrão: 'worldwide'  
 * Locais: "brazil, worldwide, italy..."  
-* Test Mode: "TEST#TICKET", ""  
+* Test Mode: "TEST#TICKET"  
+* FUNÇÃO ASYNC/PROMISE, USE AWAIT!  
 * ------------------------------------- */  
   
-// Retorna o valor padrão e detalhes do erro  
+/* Retorna o valor padrão e detalhes do erro */  
 fail('Error')  
   
-// Retorna o resultado e roda funções adicionais  
+/* Retorna o resultado e roda funções adicionais */  
 dump('*')  
   
-// Reseta o ambiente dos códigos  
+/* Reseta o ambiente dos códigos */  
 reset()  
   
-// Retorna a package JSON  
+/* Retorna a package JSON */  
 packs()  
   
-// Retorna o ambiente de códigos  
+/* Retorna o ambiente de códigos */  
 env()  
 ```  
   
-</details>   
+</details>  
   
 <details>  
 <summary><code>Exemplos de uso:</code></summary>  
   
 ```javascript  
-// Usando .then | Modo de uso padrão  
+/* Usando .then | Modo de uso padrão */  
 const trendings = require('@killovsky/trendings');  
 trendings.info('LOCAL').then(data => {  
-	// Faça seu código baseado na object 'data' aqui  
-	// Exemplo: console.log(data);  
+    /* Faça seu código baseado na object 'data' aqui */  
+    /* Exemplo: console.log(data); */  
 })  
   
-// Usando await [async] | Modo de uso padrão  
+/* Usando await [async] | Modo de uso padrão */  
 const trendings = require('@killovsky/trendings');  
 const data = await trendings.info('LOCAL');  
-// Faça seu código aqui usando a const 'data'  
-// Exemplo: console.log(data);  
+/* Faça seu código aqui usando a const 'data' */  
+/* Exemplo: console.log(data); */  
 ```  
   
 </details>  
@@ -155,7 +158,7 @@ const data = await trendings.info('LOCAL');
 <summary><code>Código já prontos [.then]:</code></summary>  
   
 ```javascript  
-// Código usando .then  
+/* Código usando .then */  
 const trendings = require('@killovsky/trendings');  
 trendings.info('brazil').then(data => console.log(data));  
 ```  
@@ -166,14 +169,14 @@ trendings.info('brazil').then(data => console.log(data));
 <summary><code>Código já prontos [async/await]:</code></summary>  
   
 ```javascript  
-// Código usando await   
+/* Código usando await */  
 const trendings = require('@killovsky/trendings');  
 const data = await trendings.info('brazil');  
 console.log(data);  
   
-// Se você não sabe criar uma função async ou ainda não tiver uma, use este código abaixo:  
+/* Se você não sabe criar uma função async ou ainda não tiver uma, use este código abaixo: */  
 (async () => {  
-	// Cole um código com await aqui dentro  
+    /* Cole um código com await aqui dentro */  
 })();  
 ```  
   
@@ -184,33 +187,34 @@ console.log(data);
   
 ```JSON  
 {  
-	"date": "String | Data [YYYY-MM-DD HH:MM:SS]",  
-	"error": "Boolean | Determina se houve erro no request",  
-	"dev_msg": "String / Boolean | Mensagem adicional de erro",  
-	"error_msg": "String / false | Mensagem de erro do request",   
-	"code": "Number | String | Código de erro HTTP",  
-	"nodeDetails": {  
-		"isError": "Boolean | Determina se houve erro no Node",  
-		"code": "Number / Boolean | Código de erro do Node",  
-		"message": "String / Boolean | Detalhes da mensagem de erro"  
-	},  
+    "date": "String | Data [YYYY-MM-DD HH:MM:SS]",  
+    "error": "Boolean | Determina se houve erro no request",  
+    "dev_msg": "String / Boolean | Mensagem adicional de erro",  
+    "error_msg": "String / false | Mensagem de erro do request",  
+    "code": "Number | String | Código de erro HTTP",  
+    "nodeDetails": {  
+        "isError": "Boolean | Determina se houve erro no Node",  
+        "code": "Number / Boolean | Código de erro do Node",  
+        "message": "String / Boolean | Detalhes da mensagem de erro"  
+    },  
     "explain": {  
-		"code": "Number / String | Código escrito de HTTP",  
-		"why": "String | Explicação do código HTTP"  
-	},  
-	"headers": {  
-		"date": "String | Data escrita da requisição",  
-		"content-type": "String | Tipo de resposta",  
-		"content-length": "Number | Tamanho da resposta",  
-		"Outros": "E vários outros headers, faça uma requisição para obter todos."  
-	},  
-	"tweet": [  
-		{  
-			"url": "String | URL da Trending",  
-			"trend": "String | Assunto do momento",  
-			"count": "String | Quantidade de tweets"  
-		}  
-	]  
+        "code": "Number / String | Código escrito de HTTP",  
+        "why": "String | Explicação do código HTTP"  
+    },  
+    "headers": {  
+        "date": "String | Data escrita da requisição",  
+        "content-type": "String | Tipo de resposta",  
+        "content-length": "Number | Tamanho da resposta",  
+        "Outros": "E vários outros headers, faça uma requisição para obter todos"  
+    },  
+    "tweet": [  
+        {  
+            "url": "String | URL da Trending",  
+            "trend": "String | Assunto do momento",  
+            "count": "String | Quantidade de tweets simplificada",  
+            "countraw": "String | Quantidade de tweets em números inteiros"  
+        }  
+    ]  
 }  
 ```  
   
@@ -221,7 +225,7 @@ console.log(data);
   
 ```JSON  
 {  
-    "date":"3/25/2023, 2:03:05 PM",  
+    "date":"22/07/2024, 22:22:00",  
     "error":false,  
     "dev_msg":false,  
     "error_msg":false,  
@@ -237,22 +241,23 @@ console.log(data);
     },  
     "headers":{  
         "connection":"close",  
-        "date":"Sat, 25 Mar 2023 17:03:05 GMT",  
-        "last-modified":"Sat, 25 Mar 2023 16:59:19 GMT"  
+        "date":"Tue, 23 Jul 2024 00:46:26 GMT",  
+        "last-modified":"Tue, 23 Jul 2024 00:46:26 GMT"  
     },  
     "tweet":[  
         {  
-            "count":"1266K",  
-            "url":"https://twitter.com/search?q=Messi",  
-            "trend":"Messi"  
+            "url": "https://twitter.com/search?q=Trump",  
+            "trend": "Trump",  
+            "count": "6.7M",  
+            "countraw": "6686521"  
         }  
     ]  
 }  
 ```  
   
-</details>   
+</details>  
   
------- 
+------  
   
 ## Perguntas e Respostas:  
   
@@ -265,7 +270,7 @@ console.log(data);
 - O que é proibido ao usar este módulo?  
 > Você jamais deve abusar de qualquer programa, sempre crie um limitador de tempo ou armazene a ultima resposta e use ela, evite ficar utilizando um programa deste estilo muitas vezes seguidas sem esperar.  
   
------- 
+------  
   
 ## Para os desenvolvedores do Trends24:  
 > Caros desenvolvedores/responsáveis do Trends24, caso este módulo possa ser ofensivo, danoso ou seja ruim para seus sistemas, me contatem usando as [Issues](https://github.com/KillovSky/Trendings/issues), farei a remoção o mais rápido possível, minha intenção neste módulo é apenas trazer uma funcionalidade útil para as pessoas ou seus projetos de desenvolvimento, meu objetivo não é, nunca foi e nunca será, causar danos ao site de vocês.  

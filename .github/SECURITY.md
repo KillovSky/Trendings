@@ -6,7 +6,7 @@
 
 ## Reportando um erro, vulnerabilidade, violação ou outros
 - O principal meio de reportar um erro é utilizando a [Issues](https://github.com/KillovSky/Trendings/issues?q=) oficial do módulo.
-- Meios alternativos de reportar um erro podem ser encontrados olhando a aba de contato no [Perfil](https://github.com/KillovSky#-social).
+- Meios alternativos de reportar um erro podem ser encontrados olhando a URL do [Linktree](https:/linktr.ee/killovsky).
 - Prefira utilizar a GitHub, Telegram ou WhatsApp, pois recebo milhares de emails e não olho outras redes social frequentemente.
 
 ## Informações
